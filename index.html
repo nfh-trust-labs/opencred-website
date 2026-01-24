@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenVC - Open Verifiable Credentials | Networks for Humanity</title>
+    <meta name="description" content="Issue, verify, and manage verifiable credentials with complete user control. No storage, no lock-in. An NFH initiative.">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="OpenVC - Open Verifiable Credentials">
+    <meta property="og:description" content="Issue, verify, and manage verifiable credentials with complete user control. No storage, no lock-in.">
+    <meta property="twitter:card" content="summary_large_image">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="openvc-logo.svg">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* Gradient text effect */
+        .gradient-text {
+            background: linear-gradient(135deg, #1a73e8 0%, #34a853 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Card hover effect */
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        /* Feature icon gradient */
+        .feature-icon {
+            background: linear-gradient(135deg, #1a73e8 0%, #34a853 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Hero pattern background */
+        .hero-pattern {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 50%, #e6f3ff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-pattern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle at 25% 25%, rgba(26, 115, 232, 0.05) 0%, transparent 50%),
+                              radial-gradient(circle at 75% 75%, rgba(52, 168, 83, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Trust icons */
+        .trust-icon {
+            position: absolute;
+            font-size: 2rem;
+            color: rgba(26, 115, 232, 0.1);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.15; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.1); }
+        }
+
+        /* Floating animation */
+        .floating-element {
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+        }
+
+        /* Network animation */
+        @keyframes networkPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        .network-pulse {
+            animation: networkPulse 2s ease-in-out infinite;
+        }
+
+        /* Fade in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .floating-element { animation: none; opacity: 0.2; }
+            .trust-icon { animation: none; opacity: 0.1; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .floating-element, .trust-icon, .fade-in {
+                animation: none !important;
+            }
+        }
+
+        /* Coming Soon tooltip */
+        .coming-soon {
+            position: relative;
+            cursor: default;
+            opacity: 0.6;
+        }
+        .coming-soon::after {
+            content: 'Coming Soon';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            pointer-events: none;
+        }
+        .coming-soon:hover::after {
+            opacity: 1;
+            visibility: visible;
+            bottom: calc(100% + 6px);
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-900">
+
+    <!-- Navigation -->
+    <nav class="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <!-- OpenVC Logo -->
+                    <svg width="36" height="36" viewBox="0 0 100 100" class="mr-2">
+                        <defs>
+                            <linearGradient id="nav-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#1a73e8"/>
+                                <stop offset="100%" style="stop-color:#34a853"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="50" cy="50" r="42" fill="none" stroke="url(#nav-gradient)" stroke-width="3" stroke-dasharray="200 64"/>
+                        <path d="M 30 38 L 48 62 L 75 28" fill="none" stroke="url(#nav-gradient)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="75" cy="28" r="5" fill="url(#nav-gradient)"/>
+                        <circle cx="30" cy="38" r="4" fill="url(#nav-gradient)"/>
+                        <circle cx="48" cy="62" r="4.5" fill="url(#nav-gradient)"/>
+                    </svg>
+                    <span class="text-2xl font-bold gradient-text">OpenVC</span>
+                </div>
+                <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="bg-gradient-to-r from-blue-600 to-green-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition font-medium text-sm">
+                    Get Notified
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-pattern relative" style="min-height: calc(100vh - 64px);">
+        <!-- Background trust icons -->
+        <div class="trust-icon" style="top: 15%; left: 8%;"><i class="fas fa-certificate"></i></div>
+        <div class="trust-icon" style="top: 20%; right: 12%;"><i class="fas fa-shield-alt"></i></div>
+        <div class="trust-icon" style="top: 55%; left: 5%;"><i class="fas fa-key"></i></div>
+        <div class="trust-icon" style="bottom: 25%; right: 8%;"><i class="fas fa-check-double"></i></div>
+        <div class="trust-icon" style="top: 40%; right: 20%;"><i class="fas fa-fingerprint"></i></div>
+        <div class="trust-icon" style="bottom: 35%; left: 15%;"><i class="fas fa-lock"></i></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex items-center justify-center" style="min-height: calc(100vh - 64px);">
+            <div class="text-center py-16">
+                <!-- Launching Soon Badge -->
+                <div class="inline-flex items-center px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 mb-8 shadow-sm">
+                    <span class="relative flex h-2.5 w-2.5 mr-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                    </span>
+                    <span class="text-sm font-semibold text-gray-700">Launching Soon</span>
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+                    <span class="gradient-text">OpenVC</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
+                    Issue, verify, and manage verifiable credentials with complete user control.
+                </p>
+
+                <!-- Key value props -->
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 text-base md:text-lg text-gray-700 mb-12">
+                    <div class="flex items-center">
+                        <i class="fas fa-door-open text-blue-600 mr-3"></i>
+                        <span class="font-medium">Democratized Issuance</span>
+                    </div>
+                    <span class="hidden sm:inline text-gray-300">|</span>
+                    <div class="flex items-center">
+                        <i class="fas fa-globe text-green-600 mr-3"></i>
+                        <span class="font-medium">Open Standards</span>
+                    </div>
+                    <span class="hidden sm:inline text-gray-300">|</span>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-purple-600 mr-3"></i>
+                        <span class="font-medium">High trust at low cost</span>
+                    </div>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                    <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="inline-block bg-gradient-to-r from-blue-600 to-green-600 text-white px-10 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 font-semibold text-lg">
+                        Get Early Access
+                    </a>
+                </div>
+
+                <!-- NFH Attribution -->
+                <div class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white/80 backdrop-blur-sm border border-gray-200 px-5 py-2.5 rounded-full shadow-sm">
+                    <span>A</span>
+                    <a href="https://networksforhumanity.org/" target="_blank" rel="noopener" class="font-semibold text-blue-600 hover:text-blue-700 transition">
+                        Networks for Humanity
+                    </a>
+                    <span>Initiative</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Proposition Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center mb-6">
+                    <div class="h-1 w-12 bg-gradient-to-r from-blue-600 to-green-600 rounded"></div>
+                    <div class="mx-4 p-3 bg-gradient-to-br from-blue-50 to-green-50 rounded-full">
+                        <i class="fas fa-certificate text-2xl feature-icon"></i>
+                    </div>
+                    <div class="h-1 w-12 bg-gradient-to-r from-green-600 to-blue-600 rounded"></div>
+                </div>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text mb-6">
+                    Verifiable Credentials for Everyone
+                </h2>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    OpenVC democratizes credential issuance and verification, putting users in control
+                    of their digital identity while ensuring cryptographic trust.
+                </p>
+            </div>
+
+            <!-- Principle Cards -->
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Card 1: User-Centric -->
+                <div class="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-8 shadow-lg card-hover border border-blue-100">
+                    <div class="bg-blue-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-user-check text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-900">User-Centric</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Users have complete custody and control over their credentials.
+                        No intermediary holds your data.
+                    </p>
+                </div>
+
+                <!-- Card 2: Privacy-Preserving -->
+                <div class="bg-gradient-to-br from-green-50 to-white rounded-2xl p-8 shadow-lg card-hover border border-green-100">
+                    <div class="bg-green-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-eye-slash text-2xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-900">Privacy-Preserving</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        No storage of credentials beyond temporary processing.
+                        Cryptographic protection ensures data integrity.
+                    </p>
+                </div>
+
+                <!-- Card 3: Decentralized -->
+                <div class="bg-gradient-to-br from-purple-50 to-white rounded-2xl p-8 shadow-lg card-hover border border-purple-100">
+                    <div class="bg-purple-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-network-wired text-2xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-900">Decentralized</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        No single point of failure. Universal infrastructure
+                        that works across use cases, sectors and, geographies.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What are Verifiable Credentials Section -->
+    <section id="what-are-vcs" class="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Text Content -->
+                <div>
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-6">
+                        <i class="fas fa-lightbulb mr-2"></i>
+                        Understanding the Basics
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                        What are <span class="gradient-text">Verifiable Credentials</span>?
+                    </h2>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                        Verifiable Credentials (VCs) are tamper-proof digital versions of physical documents like IDs,
+                        certificates, and licenses. They use cryptography to prove authenticity without revealing
+                        unnecessary personal information.
+                    </p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <span class="text-gray-600"><strong class="text-gray-900">Instant verification</strong> — No phone calls or manual checks needed</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <span class="text-gray-600"><strong class="text-gray-900">User-controlled</strong> — You decide what to share and with whom</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <span class="text-gray-600"><strong class="text-gray-900">Tamper-proof</strong> — Cryptographically secured against forgery</span>
+                        </li>
+                    </ul>
+                    <a href="https://drive.google.com/file/d/1kOEvGqjsKxoYvK3KglB77-DmmiZIykhA/view"
+                       target="_blank"
+                       rel="noopener"
+                       class="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold transition group">
+                        <i class="fas fa-file-alt mr-2"></i>
+                        Read our Vision Paper
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+                <!-- Visual Diagram -->
+                <div class="relative">
+                    <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+                        <div class="text-center mb-6">
+                            <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">How it works</span>
+                        </div>
+                        <div class="space-y-6">
+                            <!-- Issuer -->
+                            <div class="flex items-center gap-4 p-4 bg-blue-50 rounded-xl">
+                                <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-building text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-900">Issuer</p>
+                                    <p class="text-sm text-gray-600">Creates & signs the credential</p>
+                                </div>
+                            </div>
+                            <!-- Arrow -->
+                            <div class="flex justify-center">
+                                <i class="fas fa-arrow-down text-gray-300 text-xl"></i>
+                            </div>
+                            <!-- Holder -->
+                            <div class="flex items-center gap-4 p-4 bg-green-50 rounded-xl">
+                                <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-user text-green-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-900">Holder (You)</p>
+                                    <p class="text-sm text-gray-600">Stores & controls sharing</p>
+                                </div>
+                            </div>
+                            <!-- Arrow -->
+                            <div class="flex justify-center">
+                                <i class="fas fa-arrow-down text-gray-300 text-xl"></i>
+                            </div>
+                            <!-- Verifier -->
+                            <div class="flex items-center gap-4 p-4 bg-purple-50 rounded-xl">
+                                <div class="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-search text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-900">Verifier</p>
+                                    <p class="text-sm text-gray-600">Instantly validates authenticity</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="use-cases" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-medium mb-6">
+                    <i class="fas fa-rocket mr-2"></i>
+                    Real-World Applications
+                </div>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+                    Credentials for <span class="gradient-text">Every Industry</span>
+                </h2>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                    From education to healthcare, OpenVC enables trusted digital credentials across sectors.
+                </p>
+            </div>
+
+            <!-- Use Case Cards -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Education -->
+                <div class="group p-6 bg-gradient-to-br from-blue-50 to-white rounded-2xl border border-blue-100 card-hover">
+                    <div class="bg-blue-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-graduation-cap text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 mb-2">Education</h3>
+                    <p class="text-sm text-gray-600">Degrees, diplomas, certificates, and course completions</p>
+                </div>
+
+                <!-- Professional -->
+                <div class="group p-6 bg-gradient-to-br from-green-50 to-white rounded-2xl border border-green-100 card-hover">
+                    <div class="bg-green-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-briefcase text-2xl text-green-600"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 mb-2">Professional</h3>
+                    <p class="text-sm text-gray-600">Licenses, certifications, and employment credentials</p>
+                </div>
+
+                <!-- Healthcare -->
+                <div class="group p-6 bg-gradient-to-br from-purple-50 to-white rounded-2xl border border-purple-100 card-hover">
+                    <div class="bg-purple-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-heartbeat text-2xl text-purple-600"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 mb-2">Healthcare</h3>
+                    <p class="text-sm text-gray-600">Medical records, vaccination proofs, and prescriptions</p>
+                </div>
+
+                <!-- Identity -->
+                <div class="group p-6 bg-gradient-to-br from-orange-50 to-white rounded-2xl border border-orange-100 card-hover">
+                    <div class="bg-orange-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-id-card text-2xl text-orange-600"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 mb-2">Identity</h3>
+                    <p class="text-sm text-gray-600">Government IDs, age verification, and KYC credentials</p>
+                </div>
+
+                <!-- Events -->
+                <div class="group p-6 bg-gradient-to-br from-pink-50 to-white rounded-2xl border border-pink-100 card-hover">
+                    <div class="bg-pink-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-ticket-alt text-2xl text-pink-600"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 mb-2">Events</h3>
+                    <p class="text-sm text-gray-600">Tickets, memberships, and access passes</p>
+                </div>
+
+                <!-- Finance -->
+                <div class="group p-6 bg-gradient-to-br from-indigo-50 to-white rounded-2xl border border-indigo-100 card-hover">
+                    <div class="bg-indigo-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-university text-2xl text-indigo-600"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 mb-2">Finance</h3>
+                    <p class="text-sm text-gray-600">Credit scores, bank statements, and financial attestations</p>
+                </div>
+
+                <!-- Supply Chain -->
+                <div class="group p-6 bg-gradient-to-br from-teal-50 to-white rounded-2xl border border-teal-100 card-hover">
+                    <div class="bg-teal-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-truck text-2xl text-teal-600"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 mb-2">Supply Chain</h3>
+                    <p class="text-sm text-gray-600">Product authenticity, certifications, and provenance</p>
+                </div>
+
+                <!-- Government -->
+                <div class="group p-6 bg-gradient-to-br from-red-50 to-white rounded-2xl border border-red-100 card-hover">
+                    <div class="bg-red-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-landmark text-2xl text-red-600"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 mb-2">Government</h3>
+                    <p class="text-sm text-gray-600">Permits, registrations, and civic credentials</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Waitlist Signup Section -->
+    <section id="notify" class="py-20 bg-gradient-to-r from-blue-600 to-green-600 text-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+                Be the First to Know
+            </h2>
+            <p class="text-xl mb-10 opacity-90">
+                Get notified when OpenVC launches. Early access for our waitlist members.
+            </p>
+
+            <!-- Waitlist CTA -->
+            <div class="max-w-lg mx-auto">
+                <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener"
+                   class="inline-block bg-white text-blue-600 px-10 py-4 rounded-full font-semibold hover:shadow-xl transition-all duration-300 text-lg">
+                    Join the Waitlist
+                </a>
+                <p class="text-sm mt-6 opacity-75">
+                    We respect your privacy. No spam, just launch updates.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <!-- Brand Column -->
+                <div>
+                    <div class="flex items-center mb-4">
+                        <!-- OpenVC Logo (white version) -->
+                        <svg width="32" height="32" viewBox="0 0 100 100" class="mr-2">
+                            <circle cx="50" cy="50" r="42" fill="none" stroke="white" stroke-width="3" stroke-dasharray="200 64"/>
+                            <path d="M 30 38 L 48 62 L 75 28" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="75" cy="28" r="5" fill="white"/>
+                            <circle cx="30" cy="38" r="4" fill="white"/>
+                            <circle cx="48" cy="62" r="4.5" fill="white"/>
+                        </svg>
+                        <h3 class="text-white font-bold text-xl">OpenVC</h3>
+                    </div>
+                    <p class="text-sm mb-4 leading-relaxed">
+                        Open, user-centric verifiable credentials for everyone.
+                    </p>
+                    <div class="flex items-center text-sm">
+                        <span class="mr-1">A</span>
+                        <a href="https://networksforhumanity.org/" target="_blank" rel="noopener" class="text-blue-400 hover:text-blue-300 font-semibold transition">
+                            Networks for Humanity
+                        </a>
+                        <span class="ml-1">Initiative</span>
+                    </div>
+                </div>
+
+                <!-- Resources Column -->
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><span class="coming-soon">Documentation</span></li>
+                        <li><span class="coming-soon">API Reference</span></li>
+                    </ul>
+                </div>
+
+                <!-- Connect Column -->
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Connect</h4>
+                    <div class="flex space-x-4 mb-4">
+                        <span class="coming-soon text-xl"><i class="fab fa-twitter"></i></span>
+                        <span class="coming-soon text-xl"><i class="fab fa-github"></i></span>
+                        <span class="coming-soon text-xl"><i class="fab fa-linkedin"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm">
+                <p>&copy; 2026 OpenVC. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <span class="coming-soon">Privacy Policy</span>
+                    <span class="coming-soon">Terms of Service</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
