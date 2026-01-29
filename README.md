@@ -1,6 +1,6 @@
-# OpenVC Website
+# OpenCred Website
 
-Website for **OpenVC** - an open Verifiable Credential service by [Networks for Humanity](https://networksforhumanity.org/).
+Website for **OpenCred** - an open Verifiable Credential service by [Networks for Humanity](https://networksforhumanity.org/).
 
 ## License
 
