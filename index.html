@@ -1,610 +1,1426 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenCred - Open Verifiable Credentials | Networks for Humanity</title>
-    <meta name="description" content="Issue verifiable credentials with complete user control. No storage, no lock-in. An NFH initiative.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenCred — Open Verifiable Credentials Infrastructure</title>
+  <meta name="description"
+    content="Issue verifiable credentials with complete user control. No storage, no lock-in. An NFH initiative.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="OpenCred — Open Verifiable Credentials">
+  <meta property="og:description" content="Issue verifiable credentials instantly. No storage, no lock-in.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="opencred-logo.svg">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
-    <!-- Open Graph / Social -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="OpenCred - Open Verifiable Credentials">
-    <meta property="og:description" content="Issue verifiable credentials instantly. No storage, no lock-in.">
-    <meta property="twitter:card" content="summary_large_image">
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="opencred-logo.svg">
+    :root {
+      --bg: #fafaf9;
+      --bg-warm: #f5f4f0;
+      --surface: #ffffff;
+      --border: #e0e0e0;
+      --border-light: #e8e6e1;
+      --text: #1a1a1a;
+      --text-secondary: #555;
+      --text-muted: #6b6b6b;
+      --blue: #0057FF;
+      --blue-light: #EBF0FF;
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'Geist', -apple-system, sans-serif;
+      --mono: 'IBM Plex Mono', 'SF Mono', monospace;
+    }
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    html {
+      scroll-behavior: smooth;
+    }
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    [id] {
+      scroll-margin-top: 70px;
+    }
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            scroll-behavior: smooth;
-        }
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(250, 250, 249, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
 
-        /* Gradient text effect */
-        .gradient-text {
-            background: linear-gradient(135deg, #1a73e8 0%, #34a853 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
 
-        /* Card hover effect */
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
+    .nav-brand {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      text-decoration: none;
+    }
 
-        /* Feature icon gradient */
-        .feature-icon {
-            background: linear-gradient(135deg, #1a73e8 0%, #34a853 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+    .nav-brand-name {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      color: var(--text);
+    }
 
-        /* Hero pattern background */
-        .hero-pattern {
-            background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 50%, #e6f3ff 100%);
-            position: relative;
-            overflow: hidden;
-        }
+    .nav-brand-sub {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
 
-        .hero-pattern::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: radial-gradient(circle at 25% 25%, rgba(26, 115, 232, 0.05) 0%, transparent 50%),
-                              radial-gradient(circle at 75% 75%, rgba(52, 168, 83, 0.05) 0%, transparent 50%);
-            pointer-events: none;
-        }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
 
-        /* Trust icons */
-        .trust-icon {
-            position: absolute;
-            font-size: 2rem;
-            color: rgba(26, 115, 232, 0.1);
-            animation: pulse 4s ease-in-out infinite;
-        }
+    .nav-link {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+      font-weight: 450;
+    }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.15; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(1.1); }
-        }
+    .nav-link:hover {
+      color: var(--text);
+    }
 
-        /* Floating animation */
-        .floating-element {
-            animation: float 8s ease-in-out infinite;
-        }
+    .nav-cta {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--surface);
+      background: var(--text);
+      text-decoration: none;
+      padding: 8px 20px;
+      border-radius: 2px;
+      transition: background 0.2s;
+    }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(2deg); }
-        }
+    .nav-cta:hover {
+      background: #333;
+    }
 
-        /* Network animation */
-        @keyframes networkPulse {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
-        }
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.25rem;
+      color: var(--text);
+      padding: 4px;
+      line-height: 1;
+    }
 
-        .network-pulse {
-            animation: networkPulse 2s ease-in-out infinite;
-        }
+    /* ── HERO ── */
+    .hero {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 2rem 80px;
+      position: relative;
+    }
 
-        /* Fade in animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    .hero-content {
+      max-width: 700px;
+    }
 
-        .fade-in {
-            animation: fadeIn 0.6s ease-out forwards;
-        }
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        /* Mobile optimizations */
-        @media (max-width: 768px) {
-            .floating-element { animation: none; opacity: 0.2; }
-            .trust-icon { animation: none; opacity: 0.1; }
-        }
+    .eyebrow-line {
+      width: 28px;
+      height: 1.5px;
+      background: var(--blue);
+    }
 
-        @media (prefers-reduced-motion: reduce) {
-            .floating-element, .trust-icon, .fade-in {
-                animation: none !important;
-            }
-        }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      margin-bottom: 2rem;
+    }
 
-        /* Coming Soon tooltip */
-        .coming-soon {
-            position: relative;
-            cursor: default;
-            opacity: 0.6;
-        }
-        .coming-soon::after {
-            content: 'Coming Soon';
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1f2937;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.2s ease;
-            pointer-events: none;
-        }
-        .coming-soon:hover::after {
-            opacity: 1;
-            visibility: visible;
-            bottom: calc(100% + 6px);
-        }
-    </style>
+    .hero h1 em {
+      font-style: italic;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 460px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 2px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      font-family: var(--font-body);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #0048d4;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      padding: 13px 28px;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text);
+      color: var(--text);
+    }
+
+    /* ── ADOPTION BANNER (top of page) ── */
+    .adoption-banner {
+      background: var(--text);
+      color: #fff;
+      text-align: center;
+      padding: 0.65rem 2rem;
+    }
+
+    .adoption-banner p {
+      font-size: 0.78rem;
+      font-weight: 500;
+      line-height: 1.4;
+      max-width: 1100px;
+      margin: 0 auto;
+      letter-spacing: 0.01em;
+    }
+
+    .adoption-banner strong {
+      font-weight: 700;
+    }
+
+    .hero-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .hero-meta a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .hero-meta a:hover {
+      color: var(--text);
+      text-decoration: underline;
+    }
+
+    /* ── PROOF STRIP ── */
+    .proof-strip {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .proof-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .proof-stat {
+      padding: 2rem 1.5rem;
+      border-right: 1px solid var(--border);
+    }
+
+    .proof-stat:last-child {
+      border-right: none;
+    }
+
+    .proof-stat-value {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .proof-stat-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+      line-height: 1.4;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── FEATURES ── */
+    .features {
+      padding: 100px 2rem;
+      background: var(--surface);
+    }
+
+    .features-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .features-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+      gap: 2rem;
+    }
+
+    .features-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      line-height: 1.1;
+    }
+
+    .features-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      max-width: 320px;
+      text-align: right;
+      line-height: 1.65;
+    }
+
+    .features-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .feat {
+      padding: 2.5rem;
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .feat:last-child {
+      border-right: none;
+    }
+
+    .feat-num {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--blue);
+      letter-spacing: 0.04em;
+      margin-bottom: 1.2rem;
+    }
+
+    .feat h3 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      margin-bottom: 0.7rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+
+    .feat p {
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ── VC SECTION ── */
+    .vc-section {
+      padding: 100px 2rem;
+      background: var(--bg);
+    }
+
+    .vc-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .vc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+      gap: 2rem;
+    }
+
+    .vc-header-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      line-height: 1.1;
+    }
+
+    .vc-header-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      max-width: 320px;
+      text-align: right;
+      line-height: 1.65;
+    }
+
+    .vc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .vc-text {
+      padding: 3rem;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+    }
+
+    .vc-text p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .vc-features {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .vc-feat {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .vc-feat::before {
+      content: '';
+      width: 8px;
+      height: 1.5px;
+      background: var(--blue);
+      flex-shrink: 0;
+      margin-top: 10px;
+    }
+
+    .vc-feat strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .vc-link {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    .vc-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Credential card */
+    .vc-card-wrap {
+      padding: 3rem;
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cred-card {
+      width: 100%;
+      max-width: 360px;
+      border: 1px solid var(--border);
+      padding: 2rem;
+      background: var(--surface);
+      position: relative;
+    }
+
+    .cred-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .cred-icon {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cred-header-text .label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .cred-header-text .title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      display: block;
+      margin-top: 2px;
+    }
+
+    .cred-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 1.25rem;
+    }
+
+    .cred-field {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .cred-field:last-child {
+      border-bottom: none;
+    }
+
+    .cred-field-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .cred-field-value {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .cred-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--blue);
+    }
+
+    .cred-qr {
+      opacity: 0.45;
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how-it-works {
+      margin-top: 4rem;
+    }
+
+    .how-it-works-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 2rem;
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .how-steps {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 0;
+    }
+
+    .how-step {
+      padding: 2rem 2.5rem;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+    }
+
+    .how-step:last-child {
+      border-bottom: none;
+    }
+
+    .how-step-num {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--blue);
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    .how-step h4 {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .how-step p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Triangle side */
+    .how-triangle-wrap {
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem;
+      position: relative;
+    }
+
+    .how-triangle-wrap svg {
+      max-width: 340px;
+      width: 100%;
+      display: block;
+    }
+
+    .how-triangle-wrap text {
+      font-family: var(--font-body);
+    }
+
+    /* Animated flow on triangle edges */
+    @keyframes dash-flow {
+      to {
+        stroke-dashoffset: -16;
+      }
+    }
+
+    .triangle-flow {
+      stroke-dasharray: 6 10;
+      stroke-dashoffset: 0;
+      animation: dash-flow 1.5s linear infinite;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .triangle-flow {
+        animation: none;
+      }
+    }
+
+    /* Node hover pulse */
+    .triangle-node {
+      transition: transform 0.2s, filter 0.2s;
+      transform-origin: center;
+    }
+
+    .triangle-node:hover {
+      filter: drop-shadow(0 0 6px rgba(0, 87, 255, 0.3));
+    }
+
+    /* ── USE CASES ── */
+    .bento {
+      padding: 100px 2rem;
+      background: var(--bg-warm);
+    }
+
+    .bento-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .bento-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+      gap: 2rem;
+    }
+
+    .bento-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      line-height: 1.1;
+    }
+
+    .bento-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      max-width: 320px;
+      text-align: right;
+      line-height: 1.65;
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .bento-cell {
+      background: var(--surface);
+      padding: 2rem;
+    }
+
+    .bento-cell-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.8rem;
+    }
+
+    .bento-cell h4 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+
+    .bento-cell p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── CTA ── */
+    .bottom-cta {
+      padding: 120px 2rem;
+      text-align: center;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+
+    .bottom-cta h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      line-height: 1.08;
+      margin-bottom: 1rem;
+    }
+
+    .bottom-cta p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-bottom: 2.5rem;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .bottom-cta-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      background: var(--bg);
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .footer-brand-sub {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-left: 6px;
+    }
+
+    .footer-desc {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 8px;
+      max-width: 260px;
+    }
+
+    .footer-nfh {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .footer-nfh a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    .footer-nfh a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-col h5 {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .footer-col a {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      margin-bottom: 8px;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: var(--text);
+    }
+
+    .footer-col .coming-soon {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-style: italic;
+    }
+
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+
+      .features-header,
+      .vc-header,
+      .bento-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .features-subtitle,
+      .vc-header-desc,
+      .bento-desc {
+        text-align: left;
+        max-width: none;
+      }
+
+      .features-row {
+        grid-template-columns: 1fr;
+      }
+
+      .feat {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .feat:last-child {
+        border-bottom: none;
+      }
+
+      .vc-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .vc-text {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .how-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .how-steps {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .bento-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .proof-inner {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .proof-stat:nth-child(2) {
+        border-right: none;
+      }
+
+      .proof-stat:nth-child(1),
+      .proof-stat:nth-child(2) {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--bg);
+        padding: 1.5rem 2rem;
+        gap: 1rem;
+        z-index: 99;
+        border-top: 1px solid var(--border);
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .proof-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .proof-stat {
+        border-right: none !important;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .proof-stat:last-child {
+        border-bottom: none;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition-duration: 0s !important;
+      }
+    }
+  </style>
 </head>
-<body class="antialiased text-gray-900">
 
-    <!-- Navigation -->
-    <nav class="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center">
-                    <!-- OpenCred Logo -->
-                    <svg width="36" height="36" viewBox="0 0 100 100" class="mr-2">
-                        <defs>
-                            <linearGradient id="nav-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#1a73e8"/>
-                                <stop offset="100%" style="stop-color:#34a853"/>
-                            </linearGradient>
-                        </defs>
-                        <rect x="18" y="22" width="50" height="62" rx="5" ry="5" fill="none" stroke="url(#nav-gradient)" stroke-width="3"/>
-                        <rect x="26" y="55" width="20" height="20" rx="2" ry="2" fill="none" stroke="url(#nav-gradient)" stroke-width="2"/>
-                        <rect x="29" y="58" width="5" height="5" fill="url(#nav-gradient)"/>
-                        <rect x="38" y="58" width="5" height="5" fill="url(#nav-gradient)"/>
-                        <rect x="29" y="67" width="5" height="5" fill="url(#nav-gradient)"/>
-                        <rect x="35" y="64" width="3" height="3" fill="url(#nav-gradient)"/>
-                        <line x1="26" y1="32" x2="60" y2="32" stroke="url(#nav-gradient)" stroke-width="3" stroke-linecap="round"/>
-                        <line x1="26" y1="42" x2="52" y2="42" stroke="url(#nav-gradient)" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M 72 28 L 56 38 L 56 55 Q 56 70 72 78 Q 88 70 88 55 L 88 38 Z" fill="url(#nav-gradient)"/>
-                        <path d="M 63 52 L 69 58 L 81 46" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span class="text-2xl font-bold gradient-text">OpenCred</span>
-                </div>
-                <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="bg-gradient-to-r from-blue-600 to-green-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition font-medium text-sm">
-                    Get Notified
-                </a>
-            </div>
+<body>
+
+  <!-- ADOPTION BANNER -->
+  <div class="adoption-banner">
+    <p><strong>Over 1.5 billion people</strong> are empowered by Verifiable Credentials today. Join the movement.</p>
+  </div>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-brand">
+        <span class="nav-brand-name">OpenCred</span>
+        <span class="nav-brand-sub">by NFH</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links"
+        onclick="const n=document.getElementById('nav-links');const open=n.classList.toggle('open');this.setAttribute('aria-expanded',open);this.textContent=open?'✕':'☰'">☰</button>
+      <div class="nav-links" id="nav-links" role="navigation">
+        <a href="#principles" class="nav-link">Principles</a>
+        <a href="#credentials" class="nav-link">Credentials</a>
+        <a href="#use-cases" class="nav-link">Use Cases</a>
+        <a href="https://drive.google.com/file/d/1kOEvGqjsKxoYvK3KglB77-DmmiZIykhA/view" target="_blank" rel="noopener"
+          class="nav-link">Vision Paper</a>
+        <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="nav-cta">Get Early
+          Access</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-eyebrow"><span class="eyebrow-line"></span> Verifiable Credentials Infrastructure</div>
+        <h1>Issue verifiable<br>credentials <em>instantly.</em></h1>
+        <p class="hero-subtitle">Tamper-proof, W3C-compliant credentials your users actually control. We store no data.
+          Just cryptographic trust.</p>
+        <div class="hero-actions">
+          <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="btn btn-primary">Get Early
+            Access →</a>
+          <a href="https://drive.google.com/file/d/1kOEvGqjsKxoYvK3KglB77-DmmiZIykhA/view" target="_blank"
+            rel="noopener" class="btn btn-secondary">Vision Paper</a>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero-pattern relative" style="min-height: calc(100vh - 64px);">
-        <!-- Background trust icons -->
-        <div class="trust-icon" style="top: 15%; left: 8%;"><i class="fas fa-certificate"></i></div>
-        <div class="trust-icon" style="top: 20%; right: 12%;"><i class="fas fa-shield-alt"></i></div>
-        <div class="trust-icon" style="top: 55%; left: 5%;"><i class="fas fa-key"></i></div>
-        <div class="trust-icon" style="bottom: 25%; right: 8%;"><i class="fas fa-check-double"></i></div>
-        <div class="trust-icon" style="top: 40%; right: 20%;"><i class="fas fa-fingerprint"></i></div>
-        <div class="trust-icon" style="bottom: 35%; left: 15%;"><i class="fas fa-lock"></i></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex items-center justify-center" style="min-height: calc(100vh - 64px);">
-            <div class="text-center py-16">
-                <!-- Launching Soon Badge -->
-                <div class="inline-flex items-center px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 mb-8 shadow-sm">
-                    <span class="relative flex h-2.5 w-2.5 mr-3">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
-                    </span>
-                    <span class="text-sm font-semibold text-gray-700">Launching Soon</span>
-                </div>
-
-                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-                    <span class="gradient-text">OpenCred</span>
-                </h1>
-                <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
-                    Issue verifiable credentials with complete user control.
-                </p>
-
-                <!-- Key value props -->
-                <div class="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 text-base md:text-lg text-gray-700 mb-12">
-                    <div class="flex items-center">
-                        <i class="fas fa-door-open text-blue-600 mr-3"></i>
-                        <span class="font-medium">Democratized Issuance</span>
-                    </div>
-                    <span class="hidden sm:inline text-gray-300">|</span>
-                    <div class="flex items-center">
-                        <i class="fas fa-globe text-green-600 mr-3"></i>
-                        <span class="font-medium">Open Standards</span>
-                    </div>
-                    <span class="hidden sm:inline text-gray-300">|</span>
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle text-purple-600 mr-3"></i>
-                        <span class="font-medium">High trust at low cost</span>
-                    </div>
-                </div>
-
-                <!-- CTA Buttons -->
-                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                    <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="inline-block bg-gradient-to-r from-blue-600 to-green-600 text-white px-10 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 font-semibold text-lg">
-                        Get Early Access
-                    </a>
-                </div>
-
-                <!-- NFH Attribution -->
-                <div class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white/80 backdrop-blur-sm border border-gray-200 px-5 py-2.5 rounded-full shadow-sm">
-                    <span>A</span>
-                    <a href="https://networksforhumanity.org/" target="_blank" rel="noopener" class="font-semibold text-blue-600 hover:text-blue-700 transition">
-                        Networks for Humanity
-                    </a>
-                    <span>Initiative</span>
-                </div>
-            </div>
-        </div>
+        <div class="hero-meta">A <a href="https://networksforhumanity.org/" target="_blank" rel="noopener">Networks for
+            Humanity</a> initiative — open infrastructure for public benefit.</div>
+      </div>
     </section>
 
-    <!-- Value Proposition Section -->
-    <section id="about" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <div class="inline-flex items-center justify-center mb-6">
-                    <div class="h-1 w-12 bg-gradient-to-r from-blue-600 to-green-600 rounded"></div>
-                    <div class="mx-4 p-3 bg-gradient-to-br from-blue-50 to-green-50 rounded-full">
-                        <i class="fas fa-certificate text-2xl feature-icon"></i>
-                    </div>
-                    <div class="h-1 w-12 bg-gradient-to-r from-green-600 to-blue-600 rounded"></div>
-                </div>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text mb-6">
-                    Verifiable Credentials for Everyone
-                </h2>
-                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                    OpenCred democratizes credential issuance, putting users in control
-                    of their digital identity while ensuring cryptographic trust.
-                </p>
-            </div>
-
-            <!-- Principle Cards -->
-            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <!-- Card 1: User-Centric -->
-                <div class="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-8 shadow-lg card-hover border border-blue-100">
-                    <div class="bg-blue-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-user-check text-2xl text-blue-600"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-gray-900">User-Centric</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Users have complete custody and control over their credentials.
-                        No intermediary holds your data.
-                    </p>
-                </div>
-
-                <!-- Card 2: Privacy-Preserving -->
-                <div class="bg-gradient-to-br from-green-50 to-white rounded-2xl p-8 shadow-lg card-hover border border-green-100">
-                    <div class="bg-green-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-eye-slash text-2xl text-green-600"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-gray-900">Privacy-Preserving</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        No storage of credentials beyond temporary processing.
-                        Cryptographic protection ensures data integrity.
-                    </p>
-                </div>
-
-                <!-- Card 3: Decentralized -->
-                <div class="bg-gradient-to-br from-purple-50 to-white rounded-2xl p-8 shadow-lg card-hover border border-purple-100">
-                    <div class="bg-purple-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-network-wired text-2xl text-purple-600"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-gray-900">Decentralized</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        No single point of failure. Universal infrastructure
-                        that works across use cases, sectors and, geographies.
-                    </p>
-                </div>
-            </div>
+    <!-- PROOF STRIP -->
+    <div class="proof-strip">
+      <div class="proof-inner">
+        <div class="proof-stat">
+          <div class="proof-stat-value">W3C</div>
+          <div class="proof-stat-label">Standards aligned</div>
         </div>
+        <div class="proof-stat">
+          <div class="proof-stat-value">0 bytes</div>
+          <div class="proof-stat-label">Credential data stored</div>
+        </div>
+        <div class="proof-stat">
+          <div class="proof-stat-value">Zero</div>
+          <div class="proof-stat-label">Vendor lock-in</div>
+        </div>
+        <div class="proof-stat">
+          <div class="proof-stat-value">100%</div>
+          <div class="proof-stat-label">User-controlled</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRINCIPLES -->
+    <section class="features" id="principles">
+      <div class="features-inner">
+        <div class="features-header">
+          <div class="features-title">Three uncompromising<br>principles.</div>
+          <div class="features-subtitle">Every design decision in OpenCred flows from these foundations.</div>
+        </div>
+        <div class="features-row">
+          <div class="feat">
+            <div class="feat-num">01</div>
+            <h3>User-Centric</h3>
+            <p>Complete custody. No intermediary. Users hold the control to their own credentials and decide what to
+              share and with whom.</p>
+          </div>
+          <div class="feat">
+            <div class="feat-num">02</div>
+            <h3>Privacy-Preserving</h3>
+            <p>Zero storage beyond processing. Cryptographic integrity at every layer without compromising personal
+              information.</p>
+          </div>
+          <div class="feat">
+            <div class="feat-num">03</div>
+            <h3>Decentralized</h3>
+            <p>No single point of failure. Works across use cases, sectors, and geographies without vendor lock-in.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- What are Verifiable Credentials Section -->
-    <section id="what-are-vcs" class="py-20 bg-gradient-to-br from-gray-50 to-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <!-- Text Content -->
+    <!-- WHAT ARE VCs -->
+    <section class="vc-section" id="credentials">
+      <div class="vc-inner">
+        <div class="vc-header">
+          <div class="vc-header-title">What are Verifiable<br>Credentials?</div>
+          <div class="vc-header-desc">Any claim can be credentialised - IDs, degrees, marksheets, receipts</div>
+        </div>
+        <div class="vc-grid">
+          <div class="vc-text">
+            <p>Verifiable Credentials (VCs) are tamper-proof machine readable versions of claims like IDs, certificates,
+              and licenses. They use cryptography to prove authenticity without revealing unnecessary personal
+              information.</p>
+            <div class="vc-features">
+              <div class="vc-feat">
+                <div><strong>Instant verification</strong> — No phone calls or manual checks needed</div>
+              </div>
+              <div class="vc-feat">
+                <div><strong>User-controlled</strong> — You decide what to share and with whom</div>
+              </div>
+              <div class="vc-feat">
+                <div><strong>Tamper-proof</strong> — Cryptographically secured against forgery</div>
+              </div>
+              <div class="vc-feat">
+                <div><strong>Interoperable</strong> — Works across systems, borders, and platforms</div>
+              </div>
+            </div>
+            <a href="https://drive.google.com/file/d/1kOEvGqjsKxoYvK3KglB77-DmmiZIykhA/view" target="_blank"
+              rel="noopener" class="vc-link">Read our Vision Paper →</a>
+          </div>
+          <div class="vc-card-wrap">
+            <div class="cred-card">
+              <svg class="cred-qr" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <rect x="2" y="2" width="14" height="14" rx="1" stroke="var(--text)" stroke-width="1.5" fill="none" />
+                <rect x="5" y="5" width="8" height="8" rx="0.5" fill="var(--text)" />
+                <rect x="32" y="2" width="14" height="14" rx="1" stroke="var(--text)" stroke-width="1.5" fill="none" />
+                <rect x="35" y="5" width="8" height="8" rx="0.5" fill="var(--text)" />
+                <rect x="2" y="32" width="14" height="14" rx="1" stroke="var(--text)" stroke-width="1.5" fill="none" />
+                <rect x="5" y="35" width="8" height="8" rx="0.5" fill="var(--text)" />
+                <rect x="20" y="2" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="26" y="2" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="20" y="8" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="23" y="5" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="2" y="20" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="8" y="20" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="5" y="23" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="14" y="20" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="20" y="20" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="26" y="20" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="23" y="23" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="32" y="20" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="38" y="23" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="20" y="14" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="26" y="14" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="20" y="32" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="26" y="32" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="23" y="35" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="32" y="32" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="38" y="35" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="35" y="38" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="41" y="41" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="20" y="38" width="3" height="3" fill="var(--text)" opacity="0.7" />
+                <rect x="26" y="41" width="3" height="3" fill="var(--text)" opacity="0.7" />
+              </svg>
+              <div class="cred-header">
+                <div class="cred-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2L4 6v5c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6l-8-4z" stroke="var(--blue)"
+                      stroke-width="1.5" />
+                  </svg>
+                </div>
+                <div class="cred-header-text">
+                  <span class="label">Verifiable Credential</span>
+                  <span class="title">University Degree</span>
+                </div>
+              </div>
+              <div class="cred-fields">
+                <div class="cred-field"><span class="cred-field-label">Holder</span><span class="cred-field-value">Jane
+                    Doe</span></div>
+                <div class="cred-field"><span class="cred-field-label">Degree</span><span class="cred-field-value">B.Sc.
+                    Computer Science</span></div>
+                <div class="cred-field"><span class="cred-field-label">Issuer</span><span class="cred-field-value">State
+                    University</span></div>
+                <div class="cred-field"><span class="cred-field-label">Issued</span><span
+                    class="cred-field-value">2025-06-15</span></div>
+              </div>
+              <div class="cred-badge">
+                <svg width="10" height="10" viewBox="0 0 16 16" fill="none">
+                  <path d="M13.3 4L6 11.3 2.7 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+                Verified
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- How It Works + Trust Model -->
+        <div class="how-it-works">
+          <h3 class="how-it-works-title">How it works</h3>
+          <div class="how-grid">
+            <div class="how-steps">
+              <div class="how-step">
+                <div class="how-step-num">01</div>
                 <div>
-                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-6">
-                        <i class="fas fa-lightbulb mr-2"></i>
-                        Understanding the Basics
-                    </div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                        What are <span class="gradient-text">Verifiable Credentials</span>?
-                    </h2>
-                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-                        Verifiable Credentials (VCs) are tamper-proof machine readable versions of claims like IDs,
-                        certificates, and licenses. They use cryptography to prove authenticity without revealing
-                        unnecessary personal information.
-                    </p>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
-                            <span class="text-gray-600"><strong class="text-gray-900">Instant verification</strong> — No phone calls or manual checks needed</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
-                            <span class="text-gray-600"><strong class="text-gray-900">User-controlled</strong> — You decide what to share and with whom</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
-                            <span class="text-gray-600"><strong class="text-gray-900">Tamper-proof</strong> — Cryptographically secured against forgery</span>
-                        </li>
-                    </ul>
-                    <a href="https://drive.google.com/file/d/1kOEvGqjsKxoYvK3KglB77-DmmiZIykhA/view"
-                       target="_blank"
-                       rel="noopener"
-                       class="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold transition group">
-                        <i class="fas fa-file-alt mr-2"></i>
-                        Read our Vision Paper
-                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-                    </a>
+                  <h4>Issue</h4>
+                  <p>An issuer (university, employer, government) creates a verifiable credential signed with their
+                    cryptographic key.</p>
                 </div>
-                <!-- Visual Diagram -->
-                <div class="relative">
-                    <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-                        <div class="text-center mb-6">
-                            <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">How it works</span>
-                        </div>
-                        <div class="space-y-6">
-                            <!-- Issuer -->
-                            <div class="flex items-center gap-4 p-4 bg-blue-50 rounded-xl">
-                                <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-building text-blue-600"></i>
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-gray-900">Issuer</p>
-                                    <p class="text-sm text-gray-600">Creates & signs the credential</p>
-                                </div>
-                            </div>
-                            <!-- Arrow -->
-                            <div class="flex justify-center">
-                                <i class="fas fa-arrow-down text-gray-300 text-xl"></i>
-                            </div>
-                            <!-- Holder -->
-                            <div class="flex items-center gap-4 p-4 bg-green-50 rounded-xl">
-                                <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-user text-green-600"></i>
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-gray-900">Holder (You)</p>
-                                    <p class="text-sm text-gray-600">Stores & controls sharing</p>
-                                </div>
-                            </div>
-                            <!-- Arrow -->
-                            <div class="flex justify-center">
-                                <i class="fas fa-arrow-down text-gray-300 text-xl"></i>
-                            </div>
-                            <!-- Verifier -->
-                            <div class="flex items-center gap-4 p-4 bg-purple-50 rounded-xl">
-                                <div class="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-search text-purple-600"></i>
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-gray-900">Verifier</p>
-                                    <p class="text-sm text-gray-600">Instantly validates authenticity</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+              </div>
+              <div class="how-step">
+                <div class="how-step-num">02</div>
+                <div>
+                  <h4>Hold</h4>
+                  <p>The holder receives the credential in their wallet. They control it entirely — no copy is stored by
+                    the issuer.</p>
                 </div>
+              </div>
+              <div class="how-step">
+                <div class="how-step-num">03</div>
+                <div>
+                  <h4>Verify</h4>
+                  <p>A verifier checks the credential's cryptographic proof instantly. No need to contact the issuer.
+                  </p>
+                </div>
+              </div>
             </div>
+            <div class="how-triangle-wrap">
+              <svg viewBox="0 0 340 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Triangle edges with animated dashed flow -->
+                <!-- Issuer → Holder (issues credential) -->
+                <line x1="150" y1="62" x2="60" y2="185" stroke="var(--border)" stroke-width="1.2" />
+                <line x1="150" y1="62" x2="60" y2="185" stroke="var(--blue)" stroke-width="1.2" class="triangle-flow"
+                  opacity="0.4" />
+                <!-- Holder → Verifier (presents credential) -->
+                <line x1="80" y1="195" x2="260" y2="195" stroke="var(--border)" stroke-width="1.2" />
+                <line x1="80" y1="195" x2="260" y2="195" stroke="var(--blue)" stroke-width="1.2" class="triangle-flow"
+                  opacity="0.4" />
+                <!-- Verifier → Issuer (verifies trust) -->
+                <line x1="280" y1="185" x2="190" y2="62" stroke="var(--border)" stroke-width="1.2" />
+                <line x1="280" y1="185" x2="190" y2="62" stroke="var(--blue)" stroke-width="1.2" class="triangle-flow"
+                  opacity="0.4" />
+
+                <!-- Edge labels — positioned at midpoints, parallel to edges -->
+                <text x="90" y="120" fill="var(--text-muted)" font-size="9" font-weight="500" text-anchor="middle"
+                  transform="rotate(-54 90 120)">Issues</text>
+                <text x="170" y="222" fill="var(--text-muted)" font-size="9" font-weight="500"
+                  text-anchor="middle">Presents</text>
+                <text x="250" y="120" fill="var(--text-muted)" font-size="9" font-weight="500" text-anchor="middle"
+                  transform="rotate(54 250 120)">Verifies</text>
+
+                <!-- Issuer node (top center) -->
+                <g class="triangle-node">
+                  <circle cx="170" cy="45" r="22" fill="var(--blue-light)" stroke="var(--blue)" stroke-width="1.2" />
+                  <text x="170" y="50" text-anchor="middle" fill="var(--blue)" font-size="12" font-weight="600">I</text>
+                </g>
+                <text x="170" y="84" text-anchor="middle" fill="var(--text)" font-size="10.5"
+                  font-weight="600">Issuer</text>
+
+                <!-- Holder node (bottom left) -->
+                <g class="triangle-node">
+                  <circle cx="50" cy="195" r="22" fill="var(--blue-light)" stroke="var(--blue)" stroke-width="1.2" />
+                  <text x="50" y="200" text-anchor="middle" fill="var(--blue)" font-size="12" font-weight="600">H</text>
+                </g>
+                <text x="50" y="234" text-anchor="middle" fill="var(--text)" font-size="10.5"
+                  font-weight="600">Holder</text>
+
+                <!-- Verifier node (bottom right) -->
+                <g class="triangle-node">
+                  <circle cx="290" cy="195" r="22" fill="var(--blue-light)" stroke="var(--blue)" stroke-width="1.2" />
+                  <text x="290" y="200" text-anchor="middle" fill="var(--blue)" font-size="12"
+                    font-weight="600">V</text>
+                </g>
+                <text x="290" y="234" text-anchor="middle" fill="var(--text)" font-size="10.5"
+                  font-weight="600">Verifier</text>
+
+                <!-- W3C label -->
+                <text x="170" y="270" text-anchor="middle" fill="var(--text-muted)" font-size="8" font-weight="400"
+                  letter-spacing="0.05em">W3C VERIFIABLE CREDENTIALS MODEL</text>
+              </svg>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- Use Cases Section -->
-    <section id="use-cases" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <div class="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-medium mb-6">
-                    <i class="fas fa-rocket mr-2"></i>
-                    Real-World Applications
-                </div>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-                    Credentials for <span class="gradient-text">Every Industry</span>
-                </h2>
-                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-                    From education to healthcare, OpenCred enables trusted digital credentials across sectors.
-                </p>
-            </div>
-
-            <!-- Use Case Cards -->
-            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Education -->
-                <div class="group p-6 bg-gradient-to-br from-blue-50 to-white rounded-2xl border border-blue-100 card-hover">
-                    <div class="bg-blue-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-graduation-cap text-2xl text-blue-600"></i>
-                    </div>
-                    <h3 class="font-bold text-gray-900 mb-2">Education</h3>
-                    <p class="text-sm text-gray-600">Degrees, diplomas, certificates, and course completions</p>
-                </div>
-
-                <!-- Professional -->
-                <div class="group p-6 bg-gradient-to-br from-green-50 to-white rounded-2xl border border-green-100 card-hover">
-                    <div class="bg-green-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-briefcase text-2xl text-green-600"></i>
-                    </div>
-                    <h3 class="font-bold text-gray-900 mb-2">Professional</h3>
-                    <p class="text-sm text-gray-600">Licenses, certifications, and employment credentials</p>
-                </div>
-
-                <!-- Healthcare -->
-                <div class="group p-6 bg-gradient-to-br from-purple-50 to-white rounded-2xl border border-purple-100 card-hover">
-                    <div class="bg-purple-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-heartbeat text-2xl text-purple-600"></i>
-                    </div>
-                    <h3 class="font-bold text-gray-900 mb-2">Healthcare</h3>
-                    <p class="text-sm text-gray-600">Medical records, vaccination proofs, and prescriptions</p>
-                </div>
-
-                <!-- Identity -->
-                <div class="group p-6 bg-gradient-to-br from-orange-50 to-white rounded-2xl border border-orange-100 card-hover">
-                    <div class="bg-orange-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-id-card text-2xl text-orange-600"></i>
-                    </div>
-                    <h3 class="font-bold text-gray-900 mb-2">Identity</h3>
-                    <p class="text-sm text-gray-600">Government IDs, age verification, and KYC credentials</p>
-                </div>
-
-                <!-- Events -->
-                <div class="group p-6 bg-gradient-to-br from-pink-50 to-white rounded-2xl border border-pink-100 card-hover">
-                    <div class="bg-pink-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-ticket-alt text-2xl text-pink-600"></i>
-                    </div>
-                    <h3 class="font-bold text-gray-900 mb-2">Events</h3>
-                    <p class="text-sm text-gray-600">Tickets, memberships, and access passes</p>
-                </div>
-
-                <!-- Finance -->
-                <div class="group p-6 bg-gradient-to-br from-indigo-50 to-white rounded-2xl border border-indigo-100 card-hover">
-                    <div class="bg-indigo-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-university text-2xl text-indigo-600"></i>
-                    </div>
-                    <h3 class="font-bold text-gray-900 mb-2">Finance</h3>
-                    <p class="text-sm text-gray-600">Credit scores, bank statements, and financial attestations</p>
-                </div>
-
-                <!-- Supply Chain -->
-                <div class="group p-6 bg-gradient-to-br from-teal-50 to-white rounded-2xl border border-teal-100 card-hover">
-                    <div class="bg-teal-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-truck text-2xl text-teal-600"></i>
-                    </div>
-                    <h3 class="font-bold text-gray-900 mb-2">Supply Chain</h3>
-                    <p class="text-sm text-gray-600">Product authenticity, certifications, and provenance</p>
-                </div>
-
-                <!-- Government -->
-                <div class="group p-6 bg-gradient-to-br from-red-50 to-white rounded-2xl border border-red-100 card-hover">
-                    <div class="bg-red-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-landmark text-2xl text-red-600"></i>
-                    </div>
-                    <h3 class="font-bold text-gray-900 mb-2">Government</h3>
-                    <p class="text-sm text-gray-600">Permits, registrations, and civic credentials</p>
-                </div>
-            </div>
+    <!-- USE CASES -->
+    <section class="bento" id="use-cases">
+      <div class="bento-inner">
+        <div class="bento-header">
+          <div class="bento-title">Credentials for<br>every industry.</div>
+          <div class="bento-desc">From education to government, OpenCred enables trusted digital credentials across
+            sectors.</div>
         </div>
+        <div class="bento-grid">
+          <div class="bento-cell">
+            <div class="bento-cell-label">Education</div>
+            <h4>Academic Credentials</h4>
+            <p>Degrees, diplomas, certificates, and course completions verified instantly.</p>
+          </div>
+          <div class="bento-cell">
+            <div class="bento-cell-label">Healthcare</div>
+            <h4>Medical Records</h4>
+            <p>Vaccination proofs, prescriptions, and medical certifications.</p>
+          </div>
+          <div class="bento-cell">
+            <div class="bento-cell-label">Professional</div>
+            <h4>Work Credentials</h4>
+            <p>Licenses, employment history, and professional certifications.</p>
+          </div>
+          <div class="bento-cell">
+            <div class="bento-cell-label">Government</div>
+            <h4>Civic Identity</h4>
+            <p>IDs, permits, registrations, and age verification.</p>
+          </div>
+          <div class="bento-cell">
+            <div class="bento-cell-label">Finance</div>
+            <h4>Financial Trust</h4>
+            <p>Credit attestations, bank verifications, and KYC compliance.</p>
+          </div>
+          <div class="bento-cell">
+            <div class="bento-cell-label">Supply Chain</div>
+            <h4>Product Provenance</h4>
+            <p>Product authenticity, origin tracking, and certification chains.</p>
+          </div>
+          <div class="bento-cell">
+            <div class="bento-cell-label">Events</div>
+            <h4>Access & Tickets</h4>
+            <p>Event tickets, access passes, and membership verification.</p>
+          </div>
+          <div class="bento-cell">
+            <div class="bento-cell-label">Enterprise</div>
+            <h4>Organizational Trust</h4>
+            <p>Vendor approvals, compliance attestations, and audit trails.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Waitlist Signup Section -->
-    <section id="notify" class="py-20 bg-gradient-to-r from-blue-600 to-green-600 text-white">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-                Be the First to Know
-            </h2>
-            <p class="text-xl mb-10 opacity-90">
-                Get notified when OpenCred launches. Early access for our waitlist members.
-            </p>
-
-            <!-- Waitlist CTA -->
-            <div class="max-w-lg mx-auto">
-                <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener"
-                   class="inline-block bg-white text-blue-600 px-10 py-4 rounded-full font-semibold hover:shadow-xl transition-all duration-300 text-lg">
-                    Join the Waitlist
-                </a>
-                <p class="text-sm mt-6 opacity-75">
-                    We respect your privacy. No spam, just launch updates.
-                </p>
-            </div>
-        </div>
+    <!-- CTA -->
+    <section class="bottom-cta">
+      <h2>Be the first<br>to know.</h2>
+      <p>Get notified when OpenCred launches. Early access for waitlist members.</p>
+      <div class="bottom-cta-actions">
+        <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="btn btn-primary">Join the
+          Waitlist →</a>
+      </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-300 py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-3 gap-8 mb-12">
-                <!-- Brand Column -->
-                <div>
-                    <div class="flex items-center mb-4">
-                        <!-- OpenCred Logo (white version) -->
-                        <svg width="32" height="32" viewBox="0 0 100 100" class="mr-2">
-                            <rect x="18" y="22" width="50" height="62" rx="5" ry="5" fill="none" stroke="white" stroke-width="3"/>
-                            <rect x="26" y="55" width="20" height="20" rx="2" ry="2" fill="none" stroke="white" stroke-width="2"/>
-                            <rect x="29" y="58" width="5" height="5" fill="white"/>
-                            <rect x="38" y="58" width="5" height="5" fill="white"/>
-                            <rect x="29" y="67" width="5" height="5" fill="white"/>
-                            <rect x="35" y="64" width="3" height="3" fill="white"/>
-                            <line x1="26" y1="32" x2="60" y2="32" stroke="white" stroke-width="3" stroke-linecap="round"/>
-                            <line x1="26" y1="42" x2="52" y2="42" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M 72 28 L 56 38 L 56 55 Q 56 70 72 78 Q 88 70 88 55 L 88 38 Z" fill="white"/>
-                            <path d="M 63 52 L 69 58 L 81 46" fill="none" stroke="#1e293b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        <h3 class="text-white font-bold text-xl">OpenCred</h3>
-                    </div>
-                    <p class="text-sm mb-4 leading-relaxed">
-                        Open, user-centric verifiable credentials for everyone.
-                    </p>
-                    <div class="flex items-center text-sm">
-                        <span class="mr-1">A</span>
-                        <a href="https://networksforhumanity.org/" target="_blank" rel="noopener" class="text-blue-400 hover:text-blue-300 font-semibold transition">
-                            Networks for Humanity
-                        </a>
-                        <span class="ml-1">Initiative</span>
-                    </div>
-                </div>
+  </main>
 
-                <!-- Resources Column -->
-                <div>
-                    <h4 class="text-white font-semibold mb-4">Resources</h4>
-                    <ul class="space-y-3 text-sm">
-                        <li><span class="coming-soon">Documentation</span></li>
-                        <li><span class="coming-soon">API Reference</span></li>
-                    </ul>
-                </div>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">OpenCred <span class="footer-brand-sub">by NFH</span></div>
+        <p class="footer-desc">Open, user-centric verifiable credentials for everyone. Built as public infrastructure.
+        </p>
+        <p class="footer-nfh">A <a href="https://networksforhumanity.org/" target="_blank" rel="noopener">Networks for
+            Humanity</a> initiative</p>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <a href="https://drive.google.com/file/d/1kOEvGqjsKxoYvK3KglB77-DmmiZIykhA/view" target="_blank"
+          rel="noopener">Vision Paper</a>
+        <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener">Get Early Access</a>
+      </div>
+      <div class="footer-col">
+        <h5>Connect</h5>
+        <a href="https://networksforhumanity.org/" target="_blank" rel="noopener">Networks for Humanity</a>
+        <span class="coming-soon">More channels coming soon</span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 OpenCred. All rights reserved.</span>
+    </div>
+  </footer>
 
-                <!-- Connect Column -->
-                <div>
-                    <h4 class="text-white font-semibold mb-4">Connect</h4>
-                    <div class="flex space-x-4 mb-4">
-                        <span class="coming-soon text-xl"><i class="fab fa-twitter"></i></span>
-                        <span class="coming-soon text-xl"><i class="fab fa-github"></i></span>
-                        <span class="coming-soon text-xl"><i class="fab fa-linkedin"></i></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm">
-                <p>&copy; 2026 OpenCred. All rights reserved.</p>
-                <div class="flex space-x-6 mt-4 md:mt-0">
-                    <span class="coming-soon">Privacy Policy</span>
-                    <span class="coming-soon">Terms of Service</span>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JavaScript -->
-    <script>
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-    </script>
-
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', function (e) {
+        const h = this.getAttribute('href');
+        if (h === '#') return;
+        e.preventDefault();
+        const t = document.querySelector(h);
+        if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Close mobile menu
+        const nav = document.getElementById('nav-links');
+        nav.classList.remove('open');
+        document.querySelector('.nav-toggle').setAttribute('aria-expanded', 'false');
+        document.querySelector('.nav-toggle').textContent = '☰';
+      });
+    });
+    // Dynamic footer year
+    document.querySelector('.footer-bottom span').innerHTML = '&copy; ' + new Date().getFullYear() + ' OpenCred. All rights reserved.';
+  </script>
 </body>
+
 </html>
