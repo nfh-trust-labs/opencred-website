@@ -1020,6 +1020,78 @@
       }
     }
 
+    /* ── MANIFESTO TEASER ── */
+    .manifesto-teaser {
+      padding: 72px 2rem;
+      background: var(--text);
+      color: #fff;
+      text-align: center;
+    }
+
+    .manifesto-teaser-inner {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .manifesto-teaser .teaser-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .manifesto-teaser .teaser-eyebrow span {
+      width: 28px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .manifesto-teaser h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 400;
+      line-height: 1.35;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.01em;
+    }
+
+    .manifesto-teaser h2 em {
+      font-style: italic;
+    }
+
+    .manifesto-teaser .teaser-quote {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 2rem;
+    }
+
+    .manifesto-teaser .read-link {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--blue);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 28px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+
+    .manifesto-teaser .read-link:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
     @media (prefers-reduced-motion: reduce) {
       * {
         transition-duration: 0s !important;
@@ -1047,6 +1119,7 @@
         <a href="#principles" class="nav-link">Principles</a>
         <a href="#credentials" class="nav-link">Credentials</a>
         <a href="#use-cases" class="nav-link">Use Cases</a>
+        <a href="manifesto/" class="nav-link">Manifesto</a>
         <a href="https://drive.google.com/file/d/1kOEvGqjsKxoYvK3KglB77-DmmiZIykhA/view" target="_blank" rel="noopener"
           class="nav-link">Vision Paper</a>
         <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="nav-cta">Get Early
@@ -1308,6 +1381,20 @@
             </div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- MANIFESTO TEASER -->
+    <section class="manifesto-teaser">
+      <div class="manifesto-teaser-inner">
+        <div class="teaser-eyebrow">
+          <span></span>
+          The OpenCred Manifesto
+          <span></span>
+        </div>
+        <h2>Every interaction you have with the world creates data. And yet &mdash; it sits locked inside <em>institutional silos.</em></h2>
+        <p class="teaser-quote">We built OpenCred to put verifiable, portable credentials in the hands of every person &mdash; so your data finally belongs to you.</p>
+        <a href="manifesto/" class="read-link">Read the Full Manifesto &rarr;</a>
       </div>
     </section>
 
