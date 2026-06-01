@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App — OpenCred</title>
+  <meta name="description" content="Run OpenCred on your own infrastructure. Desktop app and Docker image for self-hosted credential issuance.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="OpenCred App — Self-Hosted Credential Issuance">
+  <meta property="og:description" content="Desktop app and Docker image for running OpenCred on your own infrastructure.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="../opencred-logo.svg">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #fafaf9;
+      --bg-warm: #f5f4f0;
+      --surface: #ffffff;
+      --border: #e0e0e0;
+      --border-light: #e8e6e1;
+      --text: #1a1a1a;
+      --text-secondary: #555;
+      --text-muted: #6b6b6b;
+      --blue: #0057FF;
+      --blue-light: #EBF0FF;
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'Geist', -apple-system, sans-serif;
+      --mono: 'IBM Plex Mono', 'SF Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+    [id] { scroll-margin-top: 70px; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(250, 250, 249, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between; height: 60px;
+    }
+    .nav-brand { display: flex; align-items: baseline; gap: 8px; text-decoration: none; }
+    .nav-brand-name { font-family: var(--font-display); font-size: 1.85rem; color: var(--text); }
+    .nav-brand-sub { font-family: var(--mono); font-size: 0.75rem; color: var(--text-muted); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-link { font-size: 0.82rem; color: var(--text-secondary); text-decoration: none; font-weight: 450; transition: color 0.2s; }
+    .nav-link:hover { color: var(--text); }
+    .nav-link.active { color: var(--blue); font-weight: 600; }
+    .nav-cta {
+      font-size: 0.82rem; font-weight: 600; color: var(--surface);
+      background: var(--text); text-decoration: none;
+      padding: 8px 20px; border-radius: 2px; transition: background 0.2s;
+    }
+    .nav-cta:hover { background: #333; }
+    .nav-toggle {
+      display: none; background: none; border: none; cursor: pointer;
+      font-size: 1.25rem; color: var(--text); padding: 4px; line-height: 1;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 120px 2rem 72px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--blue); margin-bottom: 1.5rem;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .eyebrow-line { width: 28px; height: 1.5px; background: var(--blue); }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 5.5vw, 4rem);
+      font-weight: 400; line-height: 1.1;
+      letter-spacing: -0.025em; margin-bottom: 1.5rem;
+    }
+    .hero h1 em { font-style: italic; }
+    .hero .subtitle {
+      font-size: 1.05rem; color: var(--text-secondary);
+      line-height: 1.7; max-width: 540px; margin: 0 auto;
+    }
+
+    /* ── DOWNLOADS ── */
+    .downloads {
+      padding: 80px 2rem;
+    }
+    .downloads-inner {
+      max-width: 1100px; margin: 0 auto;
+    }
+    .download-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: var(--surface);
+    }
+    .download-card {
+      padding: 3rem 2.5rem;
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+      display: flex; flex-direction: column;
+    }
+    .download-card:last-child { border-right: none; }
+
+    .download-icon {
+      width: 44px; height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.5rem;
+      color: var(--blue);
+    }
+
+    .download-platforms {
+      font-family: var(--mono);
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .download-card h2 {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.75rem;
+    }
+
+    .download-card p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 2rem;
+      flex: 1;
+    }
+
+    .download-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--bg-warm);
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--text-secondary);
+      align-self: flex-start;
+      cursor: default;
+    }
+    .download-status::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--blue);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    /* ── DOCS BAND ── */
+    .docs-band {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 72px 2rem;
+    }
+    .docs-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .docs-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 1rem;
+    }
+    .docs-band h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+      margin-bottom: 1rem;
+    }
+    .docs-band h2 em { font-style: italic; }
+    .docs-band .docs-text p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 480px;
+    }
+    .docs-cta-wrap {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 32px; border-radius: 2px;
+      font-size: 0.88rem; font-weight: 600;
+      text-decoration: none; font-family: var(--font-body);
+      border: none; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { background: #0048d4; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      padding: 13px 28px;
+    }
+    .btn-secondary:hover { border-color: var(--text); color: var(--text); }
+
+    /* ── WAITLIST CTA ── */
+    .waitlist {
+      text-align: center;
+      padding: 96px 2rem;
+    }
+    .waitlist h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400; line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .waitlist p {
+      font-size: 1rem; color: var(--text-secondary);
+      margin-bottom: 2rem; line-height: 1.7;
+      max-width: 420px; margin-left: auto; margin-right: auto;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 4rem 2rem 2rem;
+      background: var(--bg);
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; justify-content: space-between; gap: 3rem;
+    }
+    .footer-brand { font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 0.5rem; }
+    .footer-brand-sub { font-family: var(--mono); font-size: 0.7rem; color: var(--text-muted); }
+    .footer-desc { font-size: 0.85rem; color: var(--text-muted); max-width: 280px; line-height: 1.6; margin-bottom: 0.5rem; }
+    .footer-nfh { font-size: 0.82rem; color: var(--text-muted); }
+    .footer-nfh a { color: var(--text-secondary); text-decoration: none; font-weight: 500; }
+    .footer-nfh a:hover { color: var(--text); text-decoration: underline; }
+    .footer-col { display: flex; flex-direction: column; gap: 8px; }
+    .footer-col h5 {
+      font-family: var(--mono); font-size: 0.68rem;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--text-muted); margin-bottom: 4px;
+    }
+    .footer-col a { font-size: 0.85rem; color: var(--text-secondary); text-decoration: none; }
+    .footer-col a:hover { color: var(--text); text-decoration: underline; }
+    .coming-soon { font-size: 0.82rem; color: var(--text-muted); font-style: italic; }
+    .footer-bottom {
+      max-width: 1100px; margin: 2rem auto 0;
+      padding-top: 1.5rem; border-top: 1px solid var(--border);
+      font-size: 0.75rem; color: var(--text-muted); text-align: center;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0; background: rgba(250,250,249,0.98); backdrop-filter: blur(16px); padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); gap: 1rem; }
+      .nav-links.open { display: flex; }
+      .nav-toggle { display: block; }
+      .download-grid { grid-template-columns: 1fr; }
+      .download-card { border-right: none; border-bottom: 1px solid var(--border); }
+      .download-card:last-child { border-bottom: none; }
+      .docs-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+      .docs-cta-wrap { justify-content: flex-start; }
+      .footer-inner { flex-direction: column; }
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 80px 1.5rem 60px; }
+      .downloads { padding: 56px 1.5rem; }
+      .download-card { padding: 2.5rem 2rem; }
+      .docs-band { padding: 56px 1.5rem; }
+      .waitlist { padding: 72px 1.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, .download-status::before { animation: none !important; transition-duration: 0s !important; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="../" class="nav-brand">
+        <span class="nav-brand-name">OpenCred</span>
+        <span class="nav-brand-sub">by NFH</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links"
+        onclick="const n=document.getElementById('nav-links');const o=n.classList.toggle('open');this.setAttribute('aria-expanded',o);this.textContent=o?'✕':'☰'">&#9776;</button>
+      <div class="nav-links" id="nav-links" role="navigation">
+        <a href="../" class="nav-link">Home</a>
+        <a href="../manifesto/" class="nav-link">Manifesto</a>
+        <a href="./" class="nav-link active">App</a>
+        <a href="https://opencred.gitbook.io/docs" target="_blank" rel="noopener" class="nav-link">Docs</a>
+        <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="nav-cta">Get Early Access</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-line"></span>
+        Self-Hosted Infrastructure
+        <span class="eyebrow-line"></span>
+      </div>
+      <h1>Run OpenCred<br><em>on your own infrastructure.</em></h1>
+      <p class="subtitle">Issue verifiable credentials from a desktop client or your own servers. Choose the deployment that fits how you work.</p>
+    </section>
+
+    <!-- DOWNLOADS -->
+    <section class="downloads">
+      <div class="downloads-inner">
+        <div class="download-grid">
+
+          <!-- Desktop App -->
+          <article class="download-card">
+            <div class="download-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <rect x="2.5" y="3.5" width="19" height="13" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M9 20.5h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M12 16.5v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="download-platforms">macOS &middot; Windows &middot; Linux</div>
+            <h2>Desktop App</h2>
+            <p>A self-contained OpenCred client for individuals and small teams. Issue, manage, and export credentials directly from your laptop &mdash; no servers required.</p>
+            <span class="download-status">Coming Soon</span>
+          </article>
+
+          <!-- Docker Image -->
+          <article class="download-card">
+            <div class="download-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="11" width="3.2" height="3.2" stroke="currentColor" stroke-width="1.3"/>
+                <rect x="7" y="11" width="3.2" height="3.2" stroke="currentColor" stroke-width="1.3"/>
+                <rect x="11" y="11" width="3.2" height="3.2" stroke="currentColor" stroke-width="1.3"/>
+                <rect x="7" y="7" width="3.2" height="3.2" stroke="currentColor" stroke-width="1.3"/>
+                <rect x="11" y="7" width="3.2" height="3.2" stroke="currentColor" stroke-width="1.3"/>
+                <rect x="11" y="3" width="3.2" height="3.2" stroke="currentColor" stroke-width="1.3"/>
+                <path d="M2 16c2 2.2 5 2.8 8 2.8 5.5 0 10-2.5 11-7-1.5 1-3 1.2-4.5 1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </div>
+            <div class="download-platforms">Containerized &middot; Production-ready</div>
+            <h2>Docker Image</h2>
+            <p>Deploy OpenCred on your own infrastructure. For organisations running credential issuance at scale, with full control over keys, storage, and deployment.</p>
+            <span class="download-status">Coming Soon</span>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- DOCS BAND -->
+    <section class="docs-band">
+      <div class="docs-inner">
+        <div class="docs-text">
+          <div class="docs-eyebrow">Documentation</div>
+          <h2>Start with the <em>docs.</em></h2>
+          <p>While the desktop app and Docker image are in development, the full OpenCred documentation is already live. Read about the architecture, the credential model, and how to integrate.</p>
+        </div>
+        <div class="docs-cta-wrap">
+          <a href="https://opencred.gitbook.io/docs" target="_blank" rel="noopener" class="btn btn-primary">Read the Docs &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- WAITLIST -->
+    <section class="waitlist">
+      <h2>Be first to ship.</h2>
+      <p>Join the waitlist to get notified the moment the desktop app and Docker image are available.</p>
+      <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="btn btn-primary">Get Early Access &rarr;</a>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">OpenCred <span class="footer-brand-sub">by NFH</span></div>
+        <p class="footer-desc">Open, user-centric verifiable credentials for everyone. Built as public infrastructure.</p>
+        <p class="footer-nfh">A <a href="https://networksforhumanity.org/" target="_blank" rel="noopener">Networks for Humanity</a> initiative</p>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <a href="https://opencred.gitbook.io/docs" target="_blank" rel="noopener">Documentation</a>
+        <a href="https://vc.cdpi.dev/" target="_blank" rel="noopener">Vision Paper</a>
+        <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener">Get Early Access</a>
+      </div>
+      <div class="footer-col">
+        <h5>Connect</h5>
+        <a href="https://networksforhumanity.org/" target="_blank" rel="noopener">Networks for Humanity</a>
+        <span class="coming-soon">More channels coming soon</span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span id="footer-year"></span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('footer-year').textContent = '© ' + new Date().getFullYear() + ' OpenCred. All rights reserved.';
+  </script>
+</body>
+
+</html>
