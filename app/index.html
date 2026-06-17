@@ -183,6 +183,25 @@
       50% { opacity: 0.35; }
     }
 
+    /* download actions */
+    .download-card .btn { align-self: flex-start; }
+    .download-cmd {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      background: var(--bg-warm); border: 1px solid var(--border); border-radius: 2px;
+      padding: 12px 14px; margin-bottom: 1rem; overflow-x: auto;
+    }
+    .download-cmd code { font-family: var(--mono); font-size: 0.78rem; color: var(--text); white-space: nowrap; }
+    .download-copy {
+      flex-shrink: 0; background: var(--text); color: #fff; border: none; border-radius: 2px;
+      font-family: var(--font-body); font-size: 0.7rem; font-weight: 600;
+      padding: 6px 12px; cursor: pointer; transition: background 0.2s;
+    }
+    .download-copy:hover { background: #333; }
+    .download-card .download-note { flex: none; font-size: 0.78rem; color: var(--text-muted); margin: 0.9rem 0 0; }
+    .download-links { font-size: 0.82rem; }
+    .download-links a { color: var(--blue); text-decoration: none; font-weight: 600; }
+    .download-links a:hover { text-decoration: underline; }
+
     /* ── DOCS BAND ── */
     .docs-band {
       background: var(--surface);
@@ -365,7 +384,9 @@
             <div class="download-platforms">macOS &middot; Windows &middot; Linux</div>
             <h2>Desktop App</h2>
             <p>A self-contained OpenCred client for individuals and small teams. Issue, manage, and export credentials directly from your laptop &mdash; no servers required.</p>
-            <span class="download-status">Coming Soon</span>
+            <a href="https://github.com/nfh-trust-labs/opencred-releases/releases/download/v1.8.0/OpenCred-1.8.0-arm64.dmg" target="_blank" rel="noopener" class="btn btn-primary">Download for macOS &rarr;</a>
+            <p class="download-note">Latest build for Apple Silicon (v1.8.0). Your signing keys never leave your machine.</p>
+            <div class="download-links"><a href="https://github.com/nfh-trust-labs/opencred-releases/releases/latest" target="_blank" rel="noopener">Windows, Linux &amp; Intel Mac &rarr;</a></div>
           </article>
 
           <!-- Docker Image -->
@@ -384,7 +405,12 @@
             <div class="download-platforms">Containerized &middot; Production-ready</div>
             <h2>Docker Image</h2>
             <p>Deploy OpenCred on your own infrastructure. For organisations running credential issuance at scale, with full control over keys, storage, and deployment.</p>
-            <span class="download-status">Coming Soon</span>
+            <div class="download-cmd">
+              <code>docker pull ghcr.io/nfh-trust-labs/opencred/opencred-server:latest</code>
+              <button class="download-copy" type="button"
+                onclick="const b=this;navigator.clipboard.writeText('docker pull ghcr.io/nfh-trust-labs/opencred/opencred-server:latest').then(()=>{b.textContent='Copied!';setTimeout(()=>{b.textContent='Copy';},1500);})">Copy</button>
+            </div>
+            <div class="download-links"><a href="https://opencred.gitbook.io/docs" target="_blank" rel="noopener">Read the deployment guide &rarr;</a></div>
           </article>
 
         </div>
@@ -397,7 +423,7 @@
         <div class="docs-text">
           <div class="docs-eyebrow">Documentation</div>
           <h2>Start with the <em>docs.</em></h2>
-          <p>While the desktop app and Docker image are in development, the full OpenCred documentation is already live. Read about the architecture, the credential model, and how to integrate.</p>
+          <p>The full OpenCred documentation is live. Read about the architecture, the credential model, and how to integrate before you deploy.</p>
         </div>
         <div class="docs-cta-wrap">
           <a href="https://opencred.gitbook.io/docs" target="_blank" rel="noopener" class="btn btn-primary">Read the Docs &rarr;</a>
@@ -407,8 +433,8 @@
 
     <!-- WAITLIST -->
     <section class="waitlist">
-      <h2>Be first to ship.</h2>
-      <p>Join the waitlist to get notified the moment the desktop app and Docker image are available.</p>
+      <h2>Stay in the loop.</h2>
+      <p>Join the mailing list for release updates, new features, and a heads-up on what&rsquo;s shipping next.</p>
       <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="btn btn-primary">Get Early Access &rarr;</a>
     </section>
 
