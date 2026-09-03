@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OpenCred — Open Verifiable Credentials Infrastructure</title>
+  <title>OpenCred — Open-Source Verifiable Credentials Infrastructure</title>
   <meta name="description"
-    content="Issue verifiable credentials with complete user control. No storage, no lock-in. An NFH initiative.">
+    content="OpenCred is an open-source, local-first toolkit for issuing and verifying W3C Verifiable Credentials. Desktop app and Docker server, MIT licensed. Issuer keys never leave your machine. An NFH initiative.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="OpenCred — Open Verifiable Credentials">
-  <meta property="og:description" content="Issue verifiable credentials instantly. No storage, no lock-in.">
+  <meta property="og:title" content="OpenCred — Open-Source Verifiable Credentials">
+  <meta property="og:description" content="Issue and verify W3C Verifiable Credentials. Open source, MIT licensed, local-first. Download the desktop app or run the Docker server.">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="opencred-logo.svg">
   <style>
@@ -258,6 +258,91 @@
 
     .adoption-banner strong {
       font-weight: 700;
+    }
+
+    .adoption-banner a {
+      color: #fff;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* ── GET OPENCRED ── */
+    .get-section {
+      padding: 100px 2rem;
+      background: var(--bg-warm);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .get-card {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .get-card p {
+      flex: 1;
+    }
+
+    .get-card-platforms {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .get-card-cmd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 10px 12px;
+      margin: 1.25rem 0 0.75rem;
+    }
+
+    .get-card-cmd code {
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      color: var(--text);
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .get-card-copy {
+      flex-shrink: 0;
+      background: var(--text);
+      color: #fff;
+      border: none;
+      border-radius: 2px;
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .get-card-copy:hover {
+      background: #333;
+    }
+
+    .get-card .btn {
+      align-self: flex-start;
+      margin-top: 1.5rem;
+    }
+
+    .get-card-link {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--blue);
+      text-decoration: none;
+      margin-top: 1.5rem;
+    }
+
+    .get-card-link:hover {
+      text-decoration: underline;
     }
 
     .hero-meta {
@@ -886,14 +971,6 @@
       color: var(--text);
     }
 
-    .footer-col .coming-soon {
-      display: block;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-      font-style: italic;
-    }
-
     .footer-bottom {
       max-width: 1100px;
       margin: 2rem auto 0;
@@ -1104,7 +1181,7 @@
 
   <!-- ADOPTION BANNER -->
   <div class="adoption-banner">
-    <p><strong>Over 1.5 billion people</strong> are empowered by Verifiable Credentials today. Join the movement.</p>
+    <p><strong>OpenCred is now open source.</strong> MIT licensed and available today &mdash; <a href="app/">download the desktop app</a>, pull the Docker image, or <a href="https://github.com/nfh-trust-labs/opencred" target="_blank" rel="noopener">read the source on GitHub</a>.</p>
   </div>
 
   <nav>
@@ -1116,16 +1193,14 @@
       <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links"
         onclick="const n=document.getElementById('nav-links');const open=n.classList.toggle('open');this.setAttribute('aria-expanded',open);this.textContent=open?'✕':'☰'">☰</button>
       <div class="nav-links" id="nav-links" role="navigation">
+        <a href="#get-started" class="nav-link">Get OpenCred</a>
         <a href="#principles" class="nav-link">Principles</a>
         <a href="#credentials" class="nav-link">Credentials</a>
         <a href="#use-cases" class="nav-link">Use Cases</a>
         <a href="manifesto/" class="nav-link">Manifesto</a>
-        <a href="app/" class="nav-link">App</a>
         <a href="https://opencred.gitbook.io/docs" target="_blank" rel="noopener" class="nav-link">Docs</a>
-        <a href="https://vc.cdpi.dev/" target="_blank" rel="noopener"
-          class="nav-link">Vision Paper</a>
-        <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="nav-cta">Get Early
-          Access</a>
+        <a href="https://github.com/nfh-trust-labs/opencred" target="_blank" rel="noopener" class="nav-link">GitHub</a>
+        <a href="app/" class="nav-cta">Download</a>
       </div>
     </div>
   </nav>
@@ -1135,17 +1210,15 @@
     <!-- HERO -->
     <section class="hero">
       <div class="hero-content">
-        <div class="hero-eyebrow"><span class="eyebrow-line"></span> Verifiable Credentials Infrastructure</div>
+        <div class="hero-eyebrow"><span class="eyebrow-line"></span> Open-Source Verifiable Credentials Infrastructure</div>
         <h1>Issue verifiable<br>credentials <em>instantly.</em></h1>
-        <p class="hero-subtitle">Tamper-proof, W3C-compliant credentials your users actually control. We store no data.
-          Just cryptographic trust.</p>
+        <p class="hero-subtitle">An open-source, local-first toolkit for issuing and verifying W3C Verifiable Credentials.
+          Run it as a desktop app or a Docker server. Your signing keys never leave your machine.</p>
         <div class="hero-actions">
-          <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="btn btn-primary">Get Early
-            Access →</a>
-          <a href="https://vc.cdpi.dev/" target="_blank"
-            rel="noopener" class="btn btn-secondary">Vision Paper</a>
+          <a href="app/" class="btn btn-primary">Download the app →</a>
+          <a href="https://github.com/nfh-trust-labs/opencred" target="_blank" rel="noopener" class="btn btn-secondary">View on GitHub</a>
         </div>
-        <div class="hero-meta">A <a href="https://networksforhumanity.org/" target="_blank" rel="noopener">Networks for
+        <div class="hero-meta">MIT licensed &middot; Latest release <a href="https://github.com/nfh-trust-labs/opencred-releases/releases/latest" target="_blank" rel="noopener">v1.11.0</a> &middot; A <a href="https://networksforhumanity.org/" target="_blank" rel="noopener">Networks for
             Humanity</a> initiative — open infrastructure for public benefit.</div>
       </div>
     </section>
@@ -1154,23 +1227,64 @@
     <div class="proof-strip">
       <div class="proof-inner">
         <div class="proof-stat">
-          <div class="proof-stat-value">W3C</div>
-          <div class="proof-stat-label">Standards aligned</div>
+          <div class="proof-stat-value">W3C VC 2.0</div>
+          <div class="proof-stat-label">Standards compliant</div>
+        </div>
+        <div class="proof-stat">
+          <div class="proof-stat-value">MIT</div>
+          <div class="proof-stat-label">Open-source licence</div>
         </div>
         <div class="proof-stat">
           <div class="proof-stat-value">0 bytes</div>
           <div class="proof-stat-label">Credential data stored</div>
         </div>
         <div class="proof-stat">
-          <div class="proof-stat-value">Zero</div>
-          <div class="proof-stat-label">Vendor lock-in</div>
-        </div>
-        <div class="proof-stat">
-          <div class="proof-stat-value">100%</div>
-          <div class="proof-stat-label">User-controlled</div>
+          <div class="proof-stat-value">36</div>
+          <div class="proof-stat-label">Bundled credential schemas</div>
         </div>
       </div>
     </div>
+
+    <!-- GET OPENCRED -->
+    <section class="get-section" id="get-started">
+      <div class="features-inner">
+        <div class="features-header">
+          <div class="features-title">Open source.<br>Available today.</div>
+          <div class="features-subtitle">Free under the MIT licence. Pick the shape that fits how you issue.</div>
+        </div>
+        <div class="features-row">
+          <div class="feat get-card">
+            <div class="feat-num">01</div>
+            <h3>Desktop app</h3>
+            <div class="get-card-platforms">macOS &middot; Windows &middot; Linux</div>
+            <p>For issuers without an engineering team. Create keys, issue credentials, and export PDFs with a scannable QR
+              &mdash; everything runs on your laptop. No server, no cloud dependency.</p>
+            <a href="app/" class="btn btn-primary">Download →</a>
+          </div>
+          <div class="feat get-card">
+            <div class="feat-num">02</div>
+            <h3>Docker server</h3>
+            <div class="get-card-platforms">Headless HTTP API &middot; ghcr.io</div>
+            <p>Automate issuance and verification inside your own systems. One image, one API key, and a signing key
+              mounted read-only. Runs anywhere Docker runs.</p>
+            <div class="get-card-cmd">
+              <code>docker pull ghcr.io/nfh-trust-labs/opencred/opencred-server:latest</code>
+              <button class="get-card-copy" type="button"
+                onclick="const b=this,c=b.previousElementSibling.textContent.trim();if(navigator.clipboard&amp;&amp;window.isSecureContext){navigator.clipboard.writeText(c).then(()=>{b.textContent='Copied';setTimeout(()=>{b.textContent='Copy';},1500);}).catch(()=>{});}else{const r=document.createRange();r.selectNodeContents(b.previousElementSibling);const s=getSelection();s.removeAllRanges();s.addRange(r);}">Copy</button>
+            </div>
+            <a href="https://opencred.gitbook.io/docs" target="_blank" rel="noopener" class="get-card-link">Deployment guide →</a>
+          </div>
+          <div class="feat get-card">
+            <div class="feat-num">03</div>
+            <h3>Source code</h3>
+            <div class="get-card-platforms">MIT &middot; TypeScript monorepo</div>
+            <p>Read it, fork it, build it, contribute. The repo ships with a contributor guide, DCO sign-off, and the
+              full changelog. Issues and releases live there too.</p>
+            <a href="https://github.com/nfh-trust-labs/opencred" target="_blank" rel="noopener" class="get-card-link">github.com/nfh-trust-labs/opencred →</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- PRINCIPLES -->
     <section class="features" id="principles">
@@ -1195,7 +1309,7 @@
           <div class="feat">
             <div class="feat-num">03</div>
             <h3>Decentralized</h3>
-            <p>No single point of failure. Works across use cases, sectors, and geographies without vendor lock-in.</p>
+            <p>No single point of failure. Open source under MIT, open standards end to end. Works across use cases, sectors, and geographies without vendor lock-in.</p>
           </div>
         </div>
       </div>
@@ -1455,11 +1569,12 @@
 
     <!-- CTA -->
     <section class="bottom-cta">
-      <h2>Be the first<br>to know.</h2>
-      <p>Get notified when OpenCred launches. Early access for waitlist members.</p>
+      <h2>Start issuing<br>today.</h2>
+      <p>Download the desktop app, run the Docker image, or build from source. Free and open under the MIT licence.</p>
       <div class="bottom-cta-actions">
-        <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="btn btn-primary">Join the
-          Waitlist →</a>
+        <a href="app/" class="btn btn-primary">Download →</a>
+        <a href="https://github.com/nfh-trust-labs/opencred" target="_blank" rel="noopener" class="btn btn-secondary">View on GitHub</a>
+        <a href="https://opencred.gitbook.io/docs" target="_blank" rel="noopener" class="btn btn-secondary">Read the docs</a>
       </div>
     </section>
 
@@ -1470,25 +1585,29 @@
     <div class="footer-inner">
       <div>
         <div class="footer-brand">OpenCred <span class="footer-brand-sub">by NFH</span></div>
-        <p class="footer-desc">Open, user-centric verifiable credentials for everyone. Built as public infrastructure.
+        <p class="footer-desc">Open-source, user-centric verifiable credentials for everyone. Built as public infrastructure.
         </p>
         <p class="footer-nfh">A <a href="https://networksforhumanity.org/" target="_blank" rel="noopener">Networks for
             Humanity</a> initiative</p>
       </div>
       <div class="footer-col">
         <h5>Resources</h5>
+        <a href="app/">Download</a>
+        <a href="https://opencred.gitbook.io/docs" target="_blank" rel="noopener">Documentation</a>
+        <a href="https://github.com/nfh-trust-labs/opencred" target="_blank" rel="noopener">Source on GitHub</a>
+        <a href="https://github.com/nfh-trust-labs/opencred-releases/releases" target="_blank" rel="noopener">Releases</a>
         <a href="https://vc.cdpi.dev/" target="_blank"
           rel="noopener">Vision Paper</a>
-        <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener">Get Early Access</a>
       </div>
       <div class="footer-col">
         <h5>Connect</h5>
         <a href="https://networksforhumanity.org/" target="_blank" rel="noopener">Networks for Humanity</a>
-        <span class="coming-soon">More channels coming soon</span>
+        <a href="https://github.com/nfh-trust-labs/opencred/issues" target="_blank" rel="noopener">Report an issue</a>
+        <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener">Get release updates</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 OpenCred. All rights reserved.</span>
+      <span>&copy; 2026 Networks for Humanity. OpenCred is open source under the MIT License.</span>
     </div>
   </footer>
 
@@ -1508,7 +1627,7 @@
       });
     });
     // Dynamic footer year
-    document.querySelector('.footer-bottom span').innerHTML = '&copy; ' + new Date().getFullYear() + ' OpenCred. All rights reserved.';
+    document.querySelector('.footer-bottom span').innerHTML = '&copy; ' + new Date().getFullYear() + ' Networks for Humanity. OpenCred is open source under the MIT License.';
   </script>
 </body>
 
