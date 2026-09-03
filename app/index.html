@@ -108,13 +108,14 @@
     }
     .download-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 0;
       border: 1px solid var(--border);
       overflow: hidden;
       background: var(--surface);
     }
     .download-card {
+      min-width: 0;
       padding: 3rem 2.5rem;
       border-right: 1px solid var(--border);
       background: var(--surface);
@@ -155,33 +156,31 @@
       flex: 1;
     }
 
-    .download-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 18px;
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      background: var(--bg-warm);
-      font-family: var(--mono);
-      font-size: 0.74rem;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      color: var(--text-secondary);
-      align-self: flex-start;
-      cursor: default;
-    }
-    .download-status::before {
-      content: '';
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--blue);
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
       50% { opacity: 0.35; }
     }
+
+    /* download actions */
+    .download-card .btn { align-self: flex-start; }
+    .download-links { display: flex; flex-direction: column; gap: 6px; margin-top: 1rem; }
+    .download-links a { font-size: 0.82rem; color: var(--text-secondary); text-decoration: none; display: flex; justify-content: space-between; gap: 1rem; padding: 6px 0; border-bottom: 1px solid var(--border-light); }
+    .download-links a:last-child { border-bottom: none; }
+    .download-links a:hover { color: var(--blue); }
+    .download-links a span { font-family: var(--mono); font-size: 0.68rem; color: var(--text-muted); }
+    .download-card p.download-note { flex: none; font-size: 0.78rem; color: var(--text-muted); margin: 0.9rem 0 0; }
+    .download-note a { color: var(--blue); text-decoration: none; font-weight: 600; }
+    .download-note a:hover { text-decoration: underline; }
+    .download-cmd {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      background: var(--bg-warm); border: 1px solid var(--border); border-radius: 2px;
+      padding: 12px 14px;
+    }
+    .download-cmd code { font-family: var(--mono); font-size: 0.76rem; color: var(--text); line-height: 1.5; overflow-wrap: anywhere; }
+    .download-copy {
+      flex-shrink: 0; background: var(--text); color: #fff; border: none; border-radius: 2px;
+      font-family: var(--font-body); font-size: 0.7rem; font-weight: 600;
+      padding: 6px 12px; cursor: pointer; transition: background 0.2s;
+    }
+    .download-copy:hover { background: #333; }
 
     /* ── DOCS BAND ── */
     .docs-band {
@@ -281,7 +280,6 @@
     }
     .footer-col a { font-size: 0.85rem; color: var(--text-secondary); text-decoration: none; }
     .footer-col a:hover { color: var(--text); text-decoration: underline; }
-    .coming-soon { font-size: 0.82rem; color: var(--text-muted); font-style: italic; }
     .footer-bottom {
       max-width: 1100px; margin: 2rem auto 0;
       padding-top: 1.5rem; border-top: 1px solid var(--border);
@@ -310,7 +308,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, .download-status::before { animation: none !important; transition-duration: 0s !important; }
+      * { animation: none !important; transition-duration: 0s !important; }
     }
   </style>
 </head>
@@ -330,7 +328,7 @@
         <a href="../manifesto/" class="nav-link">Manifesto</a>
         <a href="./" class="nav-link active">App</a>
         <a href="https://opencred.gitbook.io/docs" target="_blank" rel="noopener" class="nav-link">Docs</a>
-        <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="nav-cta">Get Early Access</a>
+        <a href="https://github.com/nfh-trust-labs/opencred" target="_blank" rel="noopener" class="nav-cta">GitHub</a>
       </div>
     </div>
   </nav>
@@ -341,11 +339,11 @@
     <section class="hero">
       <div class="hero-eyebrow">
         <span class="eyebrow-line"></span>
-        Self-Hosted Infrastructure
+        Open Source &middot; MIT Licensed
         <span class="eyebrow-line"></span>
       </div>
       <h1>Run OpenCred<br><em>on your own infrastructure.</em></h1>
-      <p class="subtitle">Issue verifiable credentials from a desktop client or your own servers. Choose the deployment that fits how you work.</p>
+      <p class="subtitle">Issue verifiable credentials from a desktop app or your own servers. Free, open source, and available today. Latest release <a href="https://github.com/nfh-trust-labs/opencred-releases/releases/latest" target="_blank" rel="noopener" data-latest-version>v1.11.0</a>.</p>
     </section>
 
     <!-- DOWNLOADS -->
@@ -364,8 +362,15 @@
             </div>
             <div class="download-platforms">macOS &middot; Windows &middot; Linux</div>
             <h2>Desktop App</h2>
-            <p>A self-contained OpenCred client for individuals and small teams. Issue, manage, and export credentials directly from your laptop &mdash; no servers required.</p>
-            <span class="download-status">Coming Soon</span>
+            <p>A self-contained OpenCred client for individuals and small teams. Issue, manage, and export credentials directly from your laptop &mdash; no servers required. Signing keys never leave your machine.</p>
+            <div class="download-links" id="desktop-links">
+              <a href="https://github.com/nfh-trust-labs/opencred-releases/releases/download/v1.11.0/OpenCred-1.11.0-arm64.dmg" data-asset="arm64.dmg">macOS (Apple Silicon) <span>.dmg</span></a>
+              <a href="https://github.com/nfh-trust-labs/opencred-releases/releases/download/v1.11.0/OpenCred-1.11.0.dmg" data-asset="intel.dmg">macOS (Intel) <span>.dmg</span></a>
+              <a href="https://github.com/nfh-trust-labs/opencred-releases/releases/download/v1.11.0/OpenCred.Setup.1.11.0.exe" data-asset="exe">Windows <span>.exe</span></a>
+              <a href="https://github.com/nfh-trust-labs/opencred-releases/releases/download/v1.11.0/OpenCred-1.11.0.AppImage" data-asset="AppImage">Linux <span>.AppImage</span></a>
+              <a href="https://github.com/nfh-trust-labs/opencred-releases/releases/download/v1.11.0/OpenCred-1.11.0-amd64.deb" data-asset="deb">Linux (Debian / Ubuntu) <span>.deb</span></a>
+            </div>
+            <p class="download-note">Verify downloads with the <a href="https://github.com/nfh-trust-labs/opencred-releases/releases/latest" target="_blank" rel="noopener">SHA256SUMS on the release page</a>. macOS shows a one-time approval prompt on first launch; the <a href="https://opencred.gitbook.io/docs/desktop-app/installation" target="_blank" rel="noopener">installation guide</a> has the steps.</p>
           </article>
 
           <!-- Docker Image -->
@@ -383,8 +388,27 @@
             </div>
             <div class="download-platforms">Containerized &middot; Production-ready</div>
             <h2>Docker Image</h2>
-            <p>Deploy OpenCred on your own infrastructure. For organisations running credential issuance at scale, with full control over keys, storage, and deployment.</p>
-            <span class="download-status">Coming Soon</span>
+            <p>Deploy OpenCred on your own infrastructure. A headless HTTP API for organisations running credential issuance at scale, with full control over keys, storage, and deployment.</p>
+            <div class="download-cmd">
+              <code>docker pull ghcr.io/nfh-trust-labs/opencred/opencred-server:latest</code>
+              <button class="download-copy" type="button"
+                onclick="const b=this,c=b.previousElementSibling.textContent.trim();if(navigator.clipboard&amp;&amp;window.isSecureContext){navigator.clipboard.writeText(c).then(()=>{b.textContent='Copied';setTimeout(()=>{b.textContent='Copy';},1500);}).catch(()=>{});}else{const r=document.createRange();r.selectNodeContents(b.previousElementSibling);const s=getSelection();s.removeAllRanges();s.addRange(r);}">Copy</button>
+            </div>
+            <p class="download-note">Pin a version tag in production. Configuration, reverse proxy, and HSM options are in the <a href="https://opencred.gitbook.io/docs/docker-image/deployment" target="_blank" rel="noopener">deployment guide</a>.</p>
+          </article>
+
+          <!-- Source -->
+          <article class="download-card">
+            <div class="download-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M8 6l-5 6 5 6M16 6l5 6-5 6M14 4l-4 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="download-platforms">MIT &middot; TypeScript monorepo</div>
+            <h2>Source Code</h2>
+            <p>Read it, build it, contribute. The repository ships with a contributor guide, DCO sign-off, issue templates, and the full changelog for every release.</p>
+            <a href="https://github.com/nfh-trust-labs/opencred" target="_blank" rel="noopener" class="btn btn-primary">View on GitHub &rarr;</a>
+            <p class="download-note">Found a bug? <a href="https://github.com/nfh-trust-labs/opencred/issues" target="_blank" rel="noopener">Open an issue</a>. Security reports go through <a href="https://github.com/nfh-trust-labs/opencred/blob/main/SECURITY.md" target="_blank" rel="noopener">SECURITY.md</a>.</p>
           </article>
 
         </div>
@@ -397,7 +421,7 @@
         <div class="docs-text">
           <div class="docs-eyebrow">Documentation</div>
           <h2>Start with the <em>docs.</em></h2>
-          <p>While the desktop app and Docker image are in development, the full OpenCred documentation is already live. Read about the architecture, the credential model, and how to integrate.</p>
+          <p>Installation, first launch, the HTTP API reference, deployment guides, and the credential model &mdash; everything you need before and after you download.</p>
         </div>
         <div class="docs-cta-wrap">
           <a href="https://opencred.gitbook.io/docs" target="_blank" rel="noopener" class="btn btn-primary">Read the Docs &rarr;</a>
@@ -407,9 +431,9 @@
 
     <!-- WAITLIST -->
     <section class="waitlist">
-      <h2>Be first to ship.</h2>
-      <p>Join the waitlist to get notified the moment the desktop app and Docker image are available.</p>
-      <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="btn btn-primary">Get Early Access &rarr;</a>
+      <h2>Stay in the loop.</h2>
+      <p>Get a note when a new release ships, or watch the repository on GitHub.</p>
+      <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener" class="btn btn-primary">Get release updates &rarr;</a>
     </section>
 
   </main>
@@ -418,19 +442,21 @@
     <div class="footer-inner">
       <div>
         <div class="footer-brand">OpenCred <span class="footer-brand-sub">by NFH</span></div>
-        <p class="footer-desc">Open, user-centric verifiable credentials for everyone. Built as public infrastructure.</p>
+        <p class="footer-desc">Open-source, user-centric verifiable credentials for everyone. Built as public infrastructure.</p>
         <p class="footer-nfh">A <a href="https://networksforhumanity.org/" target="_blank" rel="noopener">Networks for Humanity</a> initiative</p>
       </div>
       <div class="footer-col">
         <h5>Resources</h5>
         <a href="https://opencred.gitbook.io/docs" target="_blank" rel="noopener">Documentation</a>
+        <a href="https://github.com/nfh-trust-labs/opencred" target="_blank" rel="noopener">Source on GitHub</a>
+        <a href="https://github.com/nfh-trust-labs/opencred-releases/releases" target="_blank" rel="noopener">Releases</a>
         <a href="https://vc.cdpi.dev/" target="_blank" rel="noopener">Vision Paper</a>
-        <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener">Get Early Access</a>
       </div>
       <div class="footer-col">
         <h5>Connect</h5>
         <a href="https://networksforhumanity.org/" target="_blank" rel="noopener">Networks for Humanity</a>
-        <span class="coming-soon">More channels coming soon</span>
+        <a href="https://github.com/nfh-trust-labs/opencred/issues" target="_blank" rel="noopener">Report an issue</a>
+        <a href="https://forms.gle/8NCBSscrgUTYgG4x7" target="_blank" rel="noopener">Get release updates</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -439,7 +465,43 @@
   </footer>
 
   <script>
-    document.getElementById('footer-year').textContent = '© ' + new Date().getFullYear() + ' OpenCred. All rights reserved.';
+    document.getElementById('footer-year').textContent = '© ' + new Date().getFullYear() + ' Networks for Humanity. OpenCred is open source under the MIT License.';
+    // Point download links at the latest release. Falls back to the hardcoded version
+    // if the API is unreachable or rate-limited; caches the answer for an hour per tab.
+    (function () {
+      var current = document.querySelector('[data-latest-version]').textContent.trim();
+      var patterns = {
+        'arm64.dmg': /-arm64\.dmg$/,
+        'intel.dmg': /^OpenCred-[\d.]+\.dmg$/,
+        'exe': /\.exe$/,
+        'AppImage': /\.AppImage$/,
+        'deb': /-amd64\.deb$/
+      };
+      function apply(rel) {
+        if (!rel || !/^v\d+\.\d+\.\d+$/.test(rel.tag_name) || !Array.isArray(rel.assets) || rel.tag_name === current) return;
+        var links = document.querySelectorAll('#desktop-links a[data-asset]');
+        var found = {};
+        links.forEach(function (a) {
+          var asset = rel.assets.find(function (x) { return patterns[a.dataset.asset].test(x.name); });
+          if (asset) found[a.dataset.asset] = asset.browser_download_url;
+        });
+        if (Object.keys(found).length !== links.length) return; // keep the consistent hardcoded set
+        links.forEach(function (a) { a.href = found[a.dataset.asset]; });
+        document.querySelectorAll('[data-latest-version]').forEach(function (el) { el.textContent = rel.tag_name; });
+      }
+      var cached = null;
+      try { cached = JSON.parse(sessionStorage.getItem('opencred-latest') || 'null'); } catch (e) {}
+      if (cached && Date.now() - cached.at < 3600000) { apply(cached.rel); return; }
+      fetch('https://api.github.com/repos/nfh-trust-labs/opencred-releases/releases/latest')
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (rel) {
+          if (!rel) return;
+          var slim = { tag_name: rel.tag_name, assets: (rel.assets || []).map(function (x) { return { name: x.name, browser_download_url: x.browser_download_url }; }) };
+          try { sessionStorage.setItem('opencred-latest', JSON.stringify({ at: Date.now(), rel: slim })); } catch (e) {}
+          apply(slim);
+        })
+        .catch(function () {});
+    })();
   </script>
 </body>
 
