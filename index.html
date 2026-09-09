@@ -266,6 +266,141 @@
       text-underline-offset: 3px;
     }
 
+    /* ── WHY OPENCRED ── */
+    .why-section {
+      padding: 100px 2rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      margin-bottom: 1px;
+    }
+
+    .why-text {
+      padding: 3rem;
+      border-right: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .why-text h3 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.25rem;
+    }
+
+    .why-text h3 em {
+      font-style: italic;
+    }
+
+    .why-text p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .why-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .why-text strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .why-table {
+      padding: 2rem 2.5rem;
+      background: var(--surface);
+      overflow-x: auto;
+    }
+
+    .why-table table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      line-height: 1.5;
+    }
+
+    .why-table th {
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-align: left;
+      padding: 0 12px 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .why-table th.oc {
+      color: var(--blue);
+    }
+
+    .why-table td {
+      padding: 11px 12px 11px 0;
+      border-bottom: 1px solid var(--border-light);
+      vertical-align: top;
+      color: var(--text-secondary);
+    }
+
+    .why-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .why-table td.k {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      padding-top: 13px;
+    }
+
+    .why-table td.oc {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .why-reasons {
+      margin-top: 3rem;
+    }
+
+    @media (max-width: 900px) {
+      .why-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .why-text {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .why-table {
+        padding: 1.5rem;
+      }
+
+      .why-table td.k {
+        white-space: normal;
+      }
+
+      .why-table table {
+        font-size: 0.78rem;
+      }
+
+      .why-table th,
+      .why-table td {
+        padding-right: 8px;
+      }
+    }
+
     /* ── GET OPENCRED ── */
     .get-section {
       padding: 100px 2rem;
@@ -1193,6 +1328,7 @@
       <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links"
         onclick="const n=document.getElementById('nav-links');const open=n.classList.toggle('open');this.setAttribute('aria-expanded',open);this.textContent=open?'✕':'☰'">☰</button>
       <div class="nav-links" id="nav-links" role="navigation">
+        <a href="#why" class="nav-link">Why OpenCred</a>
         <a href="#get-started" class="nav-link">Get OpenCred</a>
         <a href="#principles" class="nav-link">Principles</a>
         <a href="#credentials" class="nav-link">Credentials</a>
@@ -1244,6 +1380,57 @@
         </div>
       </div>
     </div>
+
+    <!-- WHY OPENCRED -->
+    <section class="why-section" id="why">
+      <div class="features-inner">
+        <div class="features-header">
+          <div class="features-title">Why OpenCred?</div>
+          <div class="features-subtitle">There are many ways to issue credentials. This is the small, local, dependency-free one.</div>
+        </div>
+        <div class="why-grid">
+          <div class="why-text">
+            <h3>Notepad, <em>not Word.</em></h3>
+            <p>Most credential products are platforms: an account, a hosted service, a wallet, a workflow engine, and a contract. They make sense for a national ID authority. They are far too much for a school issuing marksheets or an SME issuing employment letters.</p>
+            <p><strong>OpenCred is a tool, not a platform.</strong> It runs on your laptop or inside your own container, does one job &mdash; issue and verify W3C Verifiable Credentials &mdash; and stays out of the way of the systems you already run.</p>
+            <p>No online service to sign up for. No platform to depend on. Nothing that calls home. If OpenCred disappeared tomorrow, everything you issued would still verify.</p>
+          </div>
+          <div class="why-table">
+            <table>
+              <thead>
+                <tr><th></th><th class="oc">OpenCred</th><th>A credential platform</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="k">Runs</td><td class="oc">On your laptop or in your own infrastructure</td><td>In the vendor's cloud</td></tr>
+                <tr><td class="k">Dependencies</td><td class="oc">None &mdash; no account, no online service</td><td>Platform account, SDK, vendor uptime</td></tr>
+                <tr><td class="k">Setup</td><td class="oc">Download and run, or one container</td><td>Procurement and an integration project</td></tr>
+                <tr><td class="k">Data held</td><td class="oc">Nothing. Issue, export, done</td><td>Your holders' records, on their servers</td></tr>
+                <tr><td class="k">Keys</td><td class="oc">Never leave you: local file, hardware token, OS keychain, or your HSM</td><td>Custodied by the vendor</td></tr>
+                <tr><td class="k">Output</td><td class="oc">W3C Verifiable Credentials any conformant verifier accepts</td><td>Often verifiable only inside the platform</td></tr>
+                <tr><td class="k">Cost</td><td class="oc">Free. MIT licensed</td><td>Licences and per-credential fees</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="features-row why-reasons">
+          <div class="feat">
+            <div class="feat-num">01</div>
+            <h3>Super simple</h3>
+            <p>Download, create a key, issue. A small school or an SME can be issuing signed credentials the same afternoon, without an engineering team or a vendor onboarding.</p>
+          </div>
+          <div class="feat">
+            <div class="feat-num">02</div>
+            <h3>Embeddable</h3>
+            <p>A headless HTTP API and CLI drop into the systems you already have &mdash; student records, HR, billing &mdash; with one container. Your workflow stays yours; OpenCred only signs and packages.</p>
+          </div>
+          <div class="feat">
+            <div class="feat-num">03</div>
+            <h3>No dependencies</h3>
+            <p>No online service, no platform account, no proprietary format. Open standards end to end, so what you issue today verifies anywhere, for as long as the credential is valid.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- GET OPENCRED -->
     <section class="get-section" id="get-started">
